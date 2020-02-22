@@ -1,7 +1,12 @@
 <template>
     <Row :gutter="24">
-        <i-col>
+        <i-col :span="18">
             <report-inf-card v-for="report in data" :key="report.id" :report="report"></report-inf-card>
+        </i-col>
+        <i-col :span="6">
+            <Card>
+
+            </Card>
         </i-col>
     </Row>
 </template>

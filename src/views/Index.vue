@@ -10,7 +10,9 @@
             <Content id="content">
                 <router-view></router-view>
             </Content>
-            <Footer></Footer>
+            <Footer>
+                <footer-note></footer-note>
+            </Footer>
         </Layout>
     </Layout>
 </template>
@@ -18,10 +20,12 @@
 <script>
     import TopNav from "@/views/TopNav";
     import SiderNav from "@/views/SiderNav";
+    import FooterNote from "@/views/FooterNote";
 
     export default {
         name: "Index",
         components: {
+            FooterNote,
             SiderNav,
             TopNav,
         }
