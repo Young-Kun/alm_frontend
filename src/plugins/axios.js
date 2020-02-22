@@ -10,7 +10,7 @@ import state from '@/store/state';
  * api请求路径
  * post默认请求头
  */
-axios.defaults.baseURL = '/api';
+axios.defaults.baseURL = 'http://localhost:8000/api';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 // 实例单独配置

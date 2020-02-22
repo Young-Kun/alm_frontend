@@ -5,9 +5,13 @@ import store from './store'
 import router from './router'
 import './plugins/iview.js'
 import api from '@/api'
+import filters from "@/filters";
 
 Vue.prototype.$api = api;
 Vue.config.productionTip = false;
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
+});
 
 new Vue({
     store,

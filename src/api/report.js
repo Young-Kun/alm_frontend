@@ -7,6 +7,10 @@ const report = {
     // 获取所有量化表信息
     reportList() {
         return window.axios.get('/reports/');
+    },
+    // 下载某个表格
+    downloadReport(path) {
+        return window.axios.get(path);
     }
 };
 
