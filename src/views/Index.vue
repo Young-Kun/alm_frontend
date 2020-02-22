@@ -1,23 +1,28 @@
 <template>
-      <Layout>
-            <Sider id="sider" hide-trigger></Sider>
-            <Layout id="insider-wrapper">
-                <Header id="header">
-                    <top-nav></top-nav>
-                </Header>
-                <Content>
-                    <p>主页</p>
-                </Content>
-                <Footer></Footer>
-            </Layout>
+    <Layout>
+        <Sider id="sider" hide-trigger>
+            <sider-nav></sider-nav>
+        </Sider>
+        <Layout id="insider-wrapper">
+            <Header id="header">
+                <top-nav></top-nav>
+            </Header>
+            <Content id="content">
+                <router-view></router-view>
+            </Content>
+            <Footer></Footer>
         </Layout>
+    </Layout>
 </template>
 
 <script>
     import TopNav from "@/views/TopNav";
+    import SiderNav from "@/views/SiderNav";
+
     export default {
         name: "Index",
         components: {
+            SiderNav,
             TopNav,
         }
     }
@@ -46,5 +51,9 @@
         background: #fff;
         z-index: 1000;
         box-shadow: 0 0 6px 1px rgba(53, 64, 82, 0.1);
+    }
+
+    #content {
+        padding: 24px;
     }
 </style>

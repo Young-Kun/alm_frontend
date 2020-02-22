@@ -10,19 +10,30 @@ const routes = [
         redirect: {name: 'index'}
     },
     {
-        path: '/index',
+        path: '/alm',
         name: 'index',
-        component: () => import('@/views/Index')
+        component: () => import('@/views/Index'),
+        children: [
+            {
+                path: 'data-upload',
+                name: 'data-upload',
+                component: () => import('@/views/DataUpload')
+            },
+            {
+                path: 'data-review',
+                name: 'data-review',
+                component: () => import('@/views/DataReview')
+            }
+        ]
     },
     {
         path: '/login',
         name: 'login',
         component: () => import('@/views/Login')
-    }
+    },
 ];
 
 const router = new VueRouter({
-    mode: 'history',
     base: process.env.BASE_URL,
     routes
 });

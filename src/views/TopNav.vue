@@ -4,7 +4,7 @@
         <Menu mode="horizontal" theme="light" class="menu">
             <MenuItem name="1">
                 <Icon type="ios-paper"/>
-                <span>左侧菜单</span>
+                <span>菜单</span>
             </MenuItem>
         </Menu>
         <!--右边菜单-->
