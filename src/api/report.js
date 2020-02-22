@@ -10,7 +10,7 @@ const report = {
     },
     // 下载某个表格
     downloadReport(path) {
-        return window.axios.get(path);
+        return window.location.href = path;
     }
 };
 

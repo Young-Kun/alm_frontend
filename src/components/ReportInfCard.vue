@@ -31,11 +31,7 @@
         ],
         methods: {
             handleDownload() {
-                this.$api.report.downloadReport(this.report.file_data).then(() => {
-                    this.$Message.success('开始下载');
-                }).catch(error => {
-                    console.log(error)
-                })
+                this.$api.report.downloadReport(this.report.file_data);
             }
         }
     }
