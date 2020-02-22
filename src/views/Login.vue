@@ -45,7 +45,7 @@
         name: 'Login',
         data() {
             return {
-                rememberDays: 10,
+                rememberDays: 7,
                 loginModel: {
                     username: '',
                     password: '',
