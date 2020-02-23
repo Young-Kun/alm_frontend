@@ -39,4 +39,8 @@
     .menu-items-wrapper .ivu-menu-item, .menu-items-wrapper .ivu-menu-submenu {
         white-space: nowrap;
     }
+    .menu-items-wrapper {
+        height: calc(100vh - 64px);
+        overflow-y: auto;
+    }
 </style>
