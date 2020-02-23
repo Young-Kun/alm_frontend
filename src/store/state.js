@@ -1,6 +1,7 @@
 import cookie from '@/store/cookie';
 
 const siderMenuList = [
+    // 上级菜单的name要等于子菜单的前缀，最多只能有2级菜单
     {
         id: 1,
         name: 'data',

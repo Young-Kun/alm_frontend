@@ -3,7 +3,8 @@
         <div id="brand" @click="backToIndex">
             ALM
         </div>
-        <Menu theme="dark" accordion width="auto" id="sider-menu" :open-names="['data']">
+        <Menu ref="siderMenu" theme="dark" accordion width="auto" id="sider-menu" :active-name="active"
+              :open-names="open">
             <data-based-menu-items :menu-list-data=siderMenuList></data-based-menu-items>
         </Menu>
     </div>
@@ -15,6 +16,12 @@
 
     export default {
         name: "SiderNav",
+        data() {
+            return {
+                active: '',
+                open: []
+            }
+        },
         computed: {
             ...mapGetters([
                 'siderMenuList',
@@ -28,6 +35,16 @@
                 this.$router.push({name: 'index'}).catch(() => {
                 });
             },
+        },
+        mounted() {
+            const active = this.$route.path.split('/').reverse()[0];
+            const open = active.split('-')[0];
+            this.active = active;
+            this.open = [open];
+            this.$nextTick(() => {
+                this.$refs.siderMenu.updateOpened();
+                this.$refs.siderMenu.updateActiveName();
+            })
         }
     }
 </script>
