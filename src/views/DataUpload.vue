@@ -71,32 +71,36 @@
                 this.$api.data.uploadData(data).then(() => {
                     this.$Message.success('上传成功！');
                     this.file = null;
+                    this.setExisted();
                 }).catch(error => {
                     console.log(error.response)
+                })
+            },
+            setExisted() {
+                this.$api.data.datatList().then((response) => {
+                    Promise.resolve(response.data.forEach((value) => {
+                        this.existed.push(value.file_name);
+                    })).then(() => {
+                        const existed = this.existed;
+                        this.options = {
+                            disabledDate(date) {
+                                const y = date.getFullYear().toString();
+                                let m = date.getMonth() + 1;
+                                if (m < 10) {
+                                    m = '0' + m;
+                                } else {
+                                    m = m.toString();
+                                }
+                                const ym = y + m;
+                                return existed.indexOf(ym) > -1;
+                            }
+                        }
+                    })
                 })
             }
         },
         mounted() {
-            this.$api.data.datatList().then((response) => {
-                Promise.resolve(response.data.forEach((value) => {
-                    this.existed.push(value.file_name);
-                })).then(() => {
-                    const existed = this.existed;
-                    this.options = {
-                        disabledDate(date) {
-                            const y = date.getFullYear().toString();
-                            let m = date.getMonth() + 1;
-                            if (m < 10) {
-                                m = '0' + m;
-                            } else {
-                                m = m.toString();
-                            }
-                            const ym = y + m;
-                            return existed.indexOf(ym) > -1;
-                        }
-                    }
-                })
-            })
+            this.setExisted();
         }
     }
 </script>
