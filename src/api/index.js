@@ -1,7 +1,7 @@
 import user from '@/api/user'
-import report from "@/api/report";
+import data from "@/api/data";
 
 export default {
     user,
-    report,
+    data,
 }

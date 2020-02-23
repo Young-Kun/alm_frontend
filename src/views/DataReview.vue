@@ -1,7 +1,7 @@
 <template>
     <Row :gutter="24">
         <i-col :span="18">
-            <report-inf-card v-for="report in data" :key="report.id" :report="report"></report-inf-card>
+            <report-inf-card v-for="item in data_list" :key="item.id" :data_item="item"></report-inf-card>
         </i-col>
         <i-col :span="6">
             <Card>
@@ -18,12 +18,12 @@
         components: {ReportInfCard},
         data() {
             return {
-                data: []
+                data_list: []
             }
         },
         mounted() {
-            this.$api.report.reportList().then((response) => {
-                this.data = response.data;
+            this.$api.data.datatList().then((response) => {
+                this.data_list = response.data;
             }).catch(error => {
                 console.log(error);
             })

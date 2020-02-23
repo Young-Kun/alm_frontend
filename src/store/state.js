@@ -14,7 +14,7 @@ const siderMenuList = [
     },
     {
         id: 2,
-        name: 'internal-report',
+        name: 'internal-data',
         icon: 'fa-file-powerpoint-o',
         span: '内部报告'
     },
