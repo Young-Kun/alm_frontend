@@ -10,6 +10,10 @@ const data = {
     // 下载某个表格
     downloadData(path) {
         return window.location.href = path;
+    },
+    // 修改某个表格
+    updateData(id, file) {
+        return window.axios.put(`/data/${id}/`, file)
     }
 };
 
