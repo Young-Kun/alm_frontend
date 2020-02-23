@@ -1,7 +1,7 @@
 <template>
     <Row :gutter="24">
         <i-col :span="18">
-            <report-inf-card v-for="item in data_list" :key="item.id" :data_item="item"></report-inf-card>
+            <data-item-card v-for="item in data_list" :key="item.id" :data_item="item"></data-item-card>
         </i-col>
         <i-col :span="6">
             <Card>
@@ -12,10 +12,13 @@
 </template>
 
 <script>
-    import ReportInfCard from "@/components/ReportInfCard";
+    import DataItemCard from "@/components/DataItemCard";
+
     export default {
         name: "DataReview",
-        components: {ReportInfCard},
+        components: {
+            DataItemCard,
+        },
         data() {
             return {
                 data_list: []
