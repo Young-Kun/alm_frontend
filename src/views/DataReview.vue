@@ -1,9 +1,9 @@
 <template>
     <Row :gutter="24">
-        <i-col style="padding-right: 146px">
+        <i-col style="padding-right: 188px">
             <data-item-card v-for="item in data_list" :key="item.id" :data_item="item"></data-item-card>
         </i-col>
-        <Card style="position: fixed; right: 24px; top: 88px">
+        <Card style="position: fixed; right: 24px; top: 88px; width: 150px">
             <h2 slot="title">
                 <i class="fa fa-filter"></i>
                 过滤
