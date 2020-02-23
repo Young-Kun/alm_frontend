@@ -1,15 +1,19 @@
 <template>
     <Row :gutter="24">
-        <i-col :span="6">
+        <i-col :span="9">
             <Card>
-                <p slot="title">请先选择月份</p>
+                <p slot="title">
+                    请先选择月份
+                </p>
+                <p style="margin-bottom: 12px; color: gray">不可选的月份已有数据，请到【数据查看】中修改</p>
                 <DatePicker type="month"
                             placeholder="选择评估月"
+                            :options="options"
                             @on-change="handleSelectMonth">
                 </DatePicker>
             </Card>
         </i-col>
-        <i-col :span="18">
+        <i-col :span="15">
             <Card v-if="file_name">
                 <Upload action=""
                         type="drag"
@@ -36,6 +40,8 @@
             return {
                 file_name: '',
                 file: null,
+                options: null,
+                existed: []
             }
         },
         methods: {
@@ -69,6 +75,28 @@
                     console.log(error.response)
                 })
             }
+        },
+        mounted() {
+            this.$api.data.datatList().then((response) => {
+                Promise.resolve(response.data.forEach((value) => {
+                    this.existed.push(value.file_name);
+                })).then(() => {
+                    const existed = this.existed;
+                    this.options = {
+                        disabledDate(date) {
+                            const y = date.getFullYear().toString();
+                            let m = date.getMonth() + 1;
+                            if (m < 10) {
+                                m = '0' + m;
+                            } else {
+                                m = m.toString();
+                            }
+                            const ym = y + m;
+                            return existed.indexOf(ym) > -1;
+                        }
+                    }
+                })
+            })
         }
     }
 </script>
