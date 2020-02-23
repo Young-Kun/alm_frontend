@@ -83,7 +83,7 @@
                             }
                         }).catch(error => {
                             this.$Message.error('用户名或密码错误！');
-                            console.log(error)
+                            console.log(error.response)
                         })
                     } else {
                         this.$Message.error('数据格式错误！')

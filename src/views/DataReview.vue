@@ -28,7 +28,7 @@
             this.$api.data.datatList().then((response) => {
                 this.data_list = response.data;
             }).catch(error => {
-                console.log(error);
+                console.log(error.response);
             })
         }
     }

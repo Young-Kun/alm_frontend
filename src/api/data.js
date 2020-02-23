@@ -14,6 +14,10 @@ const data = {
     // 修改某个表格
     updateData(id, file) {
         return window.axios.put(`/data/${id}/`, file)
+    },
+    // 新建
+    uploadData(data) {
+        return window.axios.post('/data/', data)
     }
 };
 

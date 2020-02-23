@@ -75,7 +75,7 @@
                 this.$api.data.updateData(this.data_item.id, file).then(() => {
                     this.$Message.success('修改成功！');
                 }).catch(error => {
-                    console.log(error)
+                    console.log(error.response)
                 })
             }
         }
