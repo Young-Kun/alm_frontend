@@ -4,18 +4,18 @@
             <div v-if="menu.menu_items">
                 <Submenu :name="menu.name">
                     <template slot="title">
-                        <Icon :type="menu.icon"></Icon>
+                        <i :class="['fa fa-fw '] + [menu.icon]"></i>
                         <span>{{ menu.span }}</span>
                     </template>
                     <MenuItem v-for="item in menu.menu_items" :key="item.id" :name="item.name" :to=item.to>
-                        <Icon :type="item.icon"></Icon>
+                        <i :class="['fa fa-fw '] + [item.icon]"></i>
                         <span>{{ item.span }}</span>
                     </MenuItem>
                 </Submenu>
             </div>
             <div v-else>
                 <MenuItem :name="menu.name" :to="menu.to">
-                    <Icon :type="menu.icon"></Icon>
+                    <i :class="['fa fa-fw '] + [menu.icon]"></i>
                     <span>{{ menu.span }}</span>
                 </MenuItem>
             </div>

@@ -4,6 +4,7 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import './plugins/iview.js'
+import 'font-awesome/css/font-awesome.min.css'
 import api from '@/api'
 import filters from "@/filters";
 

@@ -14,7 +14,10 @@
             <Icon type="ios-arrow-down"></Icon>
         </span>
             <DropdownMenu slot="list">
-                <DropdownItem @click.native="handleLogout">退出</DropdownItem>
+                <DropdownItem @click.native="handleLogout">
+                    <i class="fa fa-sign-out"></i>
+                    退出
+                </DropdownItem>
             </DropdownMenu>
         </Dropdown>
     </Row>
