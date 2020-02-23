@@ -4,8 +4,8 @@
 
 const data = {
     // 获取所有量化表信息
-    datatList() {
-        return window.axios.get('/data/');
+    datatList(params) {
+        return window.axios.get('/data/', {params});
     },
     // 下载某个表格
     downloadData(path) {
