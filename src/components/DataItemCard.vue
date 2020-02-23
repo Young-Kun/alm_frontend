@@ -1,5 +1,5 @@
 <template>
-    <Card class="item">
+    <Card class="item" style="height: 175px">
         <div>
             <h1>{{ data_item.file_name }}</h1>
             <pre>文件大小：{{ data_item.file_size | fileSize }}</pre>

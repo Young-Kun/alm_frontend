@@ -36,7 +36,7 @@
                 filterParams: {
                     file_name__icontains: null,
                     page: null,
-                    page_size: 6
+                    page_size: 4
                 }
             }
         },
@@ -59,15 +59,17 @@
             }
         },
         mounted() {
-            this.getDataList(this.filterParams).then(() => {
+            // 获取所有年份
+            this.$api.data.datatList({page_size: 1000000}).then((response) => {
                 let years = [];
-                this.data_list.forEach((value) => {
+                response.data.results.forEach((value) => {
                     years.push(value.file_name.slice(0, 4))
                 });
                 this.filter_years = new Set(years);
             }).catch(error => {
                 console.log(error.response);
             });
+            this.getDataList(this.filterParams);
         }
     }
 </script>
