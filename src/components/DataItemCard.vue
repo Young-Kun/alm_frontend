@@ -72,7 +72,7 @@
             handleUpload() {
                 if (!this.file) {
                     this.$Message.error('文件不能为空');
-                    return;
+                    return false;
                 }
                 let file = new FormData();
                 file.append('file', this.file);

@@ -12,7 +12,7 @@
                 <i class="fa fa-filter"></i>
                 过滤
             </h2>
-            <Menu width="auto" theme="light" active-name="all" @on-select="handleFilterYear">
+            <Menu width="auto" theme="light" active-name="all" @on-select="handleFilterYear" class="filter-menu">
                 <MenuItem name="all">全部</MenuItem>
                 <MenuItem v-for="(year, idx) in filter_years" :key="idx" :name="year">{{ year }}</MenuItem>
             </Menu>
@@ -75,5 +75,8 @@
 </script>
 
 <style scoped>
-
+    .filter-menu {
+        max-height: calc(60vh - 100px);
+        overflow: auto;
+    }
 </style>
