@@ -6,7 +6,8 @@
                     请先选择月份
                 </p>
                 <p style="margin-bottom: 12px; color: gray">不可选的月份已有数据，请到【数据查看】中修改</p>
-                <DatePicker type="month"
+                <DatePicker ref="monthPicker"
+                            type="month"
                             placeholder="选择评估月"
                             :options="options"
                             @on-change="handleSelectMonth">
@@ -65,15 +66,20 @@
                 this.file = null;
             },
             handleUpload() {
+                if (!this.file) {
+                    this.$Message.error('文件不能为空');
+                    return;
+                }
                 let data = new FormData();
                 data.append('file_name', this.file_name);
                 data.append('file', this.file);
                 this.$api.data.uploadData(data).then(() => {
                     this.$Message.success('上传成功！');
                     this.file = null;
+                    this.$refs.monthPicker.handleClear();
                     this.setExisted();
                 }).catch(error => {
-                    console.log(error.response)
+                    console.log(error.response);
                 })
             },
             setExisted() {
