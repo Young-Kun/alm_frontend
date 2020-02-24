@@ -79,6 +79,7 @@
                     this.$refs.monthPicker.handleClear();
                     this.setExisted();
                 }).catch(error => {
+                    this.$Message.error('数据解析有误，详见控制台报错');
                     console.log(error.response);
                 })
             },

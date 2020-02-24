@@ -1,6 +1,6 @@
 <template>
     <div>
-        @CopyRight Yangkun
+        Copyright @ Yangkun
     </div>
 </template>
 
