@@ -70,10 +70,15 @@
                 this.file = null;
             },
             handleUpload() {
+                if (!this.file) {
+                    this.$Message.error('文件不能为空');
+                    return;
+                }
                 let file = new FormData();
                 file.append('file', this.file);
                 this.$api.data.updateData(this.data_item.id, file).then((response) => {
                     this.$Message.success('修改成功！');
+                    this.file = null;
                     this.data_item.modified = response.data.modified;
                     this.data_item.modified_by = response.data.modified_by;
                 }).catch(error => {
