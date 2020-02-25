@@ -12,8 +12,8 @@ const data = {
         return window.location.href = path;
     },
     // 修改某个表格
-    updateData(id, file) {
-        return window.axios.put(`/data/${id}/`, file)
+    updateData(file_name, file) {
+        return window.axios.put(`/data/${file_name}/`, file)
     },
     // 新建
     uploadData(data) {

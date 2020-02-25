@@ -15,8 +15,9 @@
                 <Button type="primary" shape="circle" @click="handleDownload">
                     下载
                 </Button>
-                <Button type="warning" shape="circle" @click="modalForModify = true">
-                    修改
+                <Button type="warning" shape="circle" @click="modalForModify = true" :loading="loading">
+                    <span v-if="loading">修改中...</span>
+                    <span v-if="!loading">修改</span>
                 </Button>
             </ButtonGroup>
             <Modal v-model="modalForModify"
@@ -45,6 +46,7 @@
             return {
                 modalForModify: false,
                 file: null,
+                loading: false
             }
         },
         props: [
@@ -74,14 +76,18 @@
                     this.$Message.error('文件不能为空');
                     return false;
                 }
+                this.loading = true;
                 let file = new FormData();
                 file.append('file', this.file);
-                this.$api.data.updateData(this.data_item.id, file).then((response) => {
+                this.$api.data.updateData(this.data_item.file_name, file).then((response) => {
                     this.$Message.success('修改成功！');
                     this.file = null;
                     this.data_item.modified = response.data.modified;
+                    this.data_item.file_size = response.data.file_size;
                     this.data_item.modified_by = response.data.modified_by;
+                    this.loading = false;
                 }).catch(error => {
+                    this.$Message.error('修改失败，详见console');
                     console.log(error.response)
                 })
             }
