@@ -27,7 +27,10 @@
                 <div v-if="file">文件: {{ file.name }}</div>
                 <div style="text-align: right">
                     <Button type="text" style="margin-right: 12px" @click="handleCancel">取消</Button>
-                    <Button type="primary" @click="handleUpload">确定</Button>
+                    <Button type="primary" @click="handleUpload" :loading="loading">
+                        <span v-if="!loading">确定</span>
+                        <span v-if="loading">上传中</span>
+                    </Button>
                 </div>
             </Card>
         </i-col>
@@ -42,7 +45,8 @@
                 file_name: '',
                 file: null,
                 options: null,
-                existed: []
+                existed: [],
+                loading: false
             }
         },
         methods: {
@@ -73,11 +77,13 @@
                 let data = new FormData();
                 data.append('file_name', this.file_name);
                 data.append('file', this.file);
+                this.loading = true;
                 this.$api.data.uploadData(data).then(() => {
                     this.$Message.success('上传成功！');
                     this.file = null;
                     this.$refs.monthPicker.handleClear();
                     this.setExisted();
+                    this.loading = false;
                 }).catch(error => {
                     this.$Message.error('数据解析有误，详见控制台报错');
                     console.log(error.response);
