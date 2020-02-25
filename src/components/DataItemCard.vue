@@ -88,7 +88,8 @@
                     this.loading = false;
                 }).catch(error => {
                     this.$Message.error('修改失败，详见console');
-                    console.log(error.response)
+                    console.log(error.response);
+                    this.loading = false;
                 })
             }
         }
