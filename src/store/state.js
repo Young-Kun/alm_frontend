@@ -14,6 +14,16 @@ const siderMenuList = [
     },
     {
         id: 2,
+        name: 'result',
+        icon: 'fa-database',
+        span: '量化结果',
+        menu_items: [
+            {id: 1, name: 'result-score', icon: '', span: '得分情况', to: {name: 'result-score'}},
+            {id: 2, name: 'result-indicator', icon: '', span: '关键指标', to: {name: 'result-indicator'}},
+        ]
+    },
+    {
+        id: 3,
         name: 'internal-data',
         icon: 'fa-file-powerpoint-o',
         span: '内部报告'

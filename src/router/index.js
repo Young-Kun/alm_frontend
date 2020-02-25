@@ -1,8 +1,25 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import state from "@/store/state";
+import data from "@/router/data";
+import result from "@/router/result";
 
 Vue.use(VueRouter);
+
+// 在这里把子路由引进来
+const children = merge([
+    data,
+    result,
+]);
+
+// 合并多个数组
+function merge(arr) {
+    let result = [];
+    arr.forEach((r) => {
+        result = result.concat(r)
+    });
+    return result
+}
 
 const routes = [
     {
@@ -10,27 +27,16 @@ const routes = [
         redirect: {name: 'index'}
     },
     {
-        path: '/alm',
-        name: 'index',
-        component: () => import('@/views/Index'),
-        children: [
-            {
-                path: 'data-upload',
-                name: 'data-upload',
-                component: () => import('@/views/DataUpload')
-            },
-            {
-                path: 'data-review',
-                name: 'data-review',
-                component: () => import('@/views/DataReview')
-            }
-        ]
-    },
-    {
         path: '/login',
         name: 'login',
         component: () => import('@/views/Login')
     },
+    {
+        path: '/alm',
+        name: 'index',
+        component: () => import('@/views/Index'),
+        children
+    }
 ];
 
 const router = new VueRouter({
