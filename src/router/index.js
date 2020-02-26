@@ -29,12 +29,12 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: () => import('@/views/Login')
+        component: () => import('@/views/layout/Login')
     },
     {
         path: '/alm',
         name: 'index',
-        component: () => import('@/views/Index'),
+        component: () => import('@/views/layout/Index'),
         children
     }
 ];

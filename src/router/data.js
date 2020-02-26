@@ -3,11 +3,11 @@ export default [
     {
         path: 'data-upload',
         name: 'data-upload',
-        component: () => import('@/views/DataUpload')
+        component: () => import('@/views/data/DataUpload')
     },
     {
         path: 'data-review',
         name: 'data-review',
-        component: () => import('@/views/DataReview')
+        component: () => import('@/views/data/DataReview')
     },
 ]

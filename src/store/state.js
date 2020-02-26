@@ -15,7 +15,7 @@ const siderMenuList = [
     {
         id: 2,
         name: 'result',
-        icon: 'fa-database',
+        icon: 'fa-bar-chart',
         span: '量化结果',
         menu_items: [
             {id: 1, name: 'result-score', icon: '', span: '得分情况', to: {name: 'result-score'}},

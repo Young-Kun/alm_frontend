@@ -21,7 +21,7 @@
 </template>
 
 <script>
-    import DataItemCard from "@/components/DataItemCard";
+    import DataItemCard from "@/components/data/DataItemCard";
 
     export default {
         name: "DataReview",

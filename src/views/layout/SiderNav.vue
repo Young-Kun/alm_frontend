@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import DataBasedMenuItems from "@/components/DataBasedMenuItems";
+    import DataBasedMenuItems from "@/components/layout/DataBasedMenuItems";
     import {mapGetters} from 'vuex';
 
     export default {

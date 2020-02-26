@@ -18,9 +18,9 @@
 </template>
 
 <script>
-    import TopNav from "@/views/TopNav";
-    import SiderNav from "@/views/SiderNav";
-    import FooterNote from "@/views/FooterNote";
+    import TopNav from "@/views/layout/TopNav";
+    import SiderNav from "@/views/layout/SiderNav";
+    import FooterNote from "@/views/layout/FooterNote";
 
     export default {
         name: "Index",
