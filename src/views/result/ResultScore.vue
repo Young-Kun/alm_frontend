@@ -34,10 +34,9 @@
             </i-col>
         </Row>
         <Row style="margin-top: 12px">
-            <Button type="primary" @click="handlePlot">查询</Button>
             <Card style="margin-top: 12px">
-                <div ref="chart" style="width: 100%; height: 500px">
-
+                <div style="width: 100%; height: 500px">
+                    <v-chart :options="options"></v-chart>
                 </div>
             </Card>
         </Row>
@@ -56,7 +55,7 @@
                 monthEnd: new Date(),
                 monthStart: '20190101',
                 selectedIndicators: null,
-                data: [],
+                quarters: [],
                 indicators: [
                     {value: 'tot_score', label: '总分'},
                     {value: 'dur_score', label: '期限结构匹配得分'},
@@ -76,7 +75,40 @@
                     {value: 'cash_flow_test_base', label: '现金流测试得分'},
                     {value: 'cash_flow_test_stress', label: '现金流压力测试得分'},
                     {value: 'liquidity', label: '流动性指标得分'},
-                ]
+                ],
+                options: {
+                    legend: {},
+                    tooltip: {
+                        trigger: 'axis',
+                    },
+                    dataset: {
+                        source: []
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: [],
+                        name: '季度',
+                        nameTextStyle: {
+                            fontSize: 16
+                        }
+                    },
+                    yAxis: {
+                        name: '得分',
+                        nameTextStyle: {
+                            fontSize: 16
+                        }
+                    },
+                    series: [
+                        {
+                            type: 'line',
+                            encode: {
+                                x: 'data',
+                                y: 'tot_score'
+                            }
+                        },
+                    ]
+                },
+
             }
         },
         methods: {
@@ -86,7 +118,8 @@
                     disabledDate(date) {
                         return date < end;
                     }
-                }
+                };
+                this.handlePlot();
             },
             handleMonthEndChange(date) {
                 const start = new Date(date);
@@ -94,62 +127,38 @@
                     disabledDate(date) {
                         return date > start;
                     }
-                }
+                };
+                this.handlePlot();
             },
             clearSelected() {
                 this.selectedIndicators = null;
             },
-            // renderChart() {
-            //     console.log(this.indicators);
-            //     this.$echarts.init(this.$refs.chart).setOption({
-            //         legend: {},
-            //         tooltip: {
-            //             trigger: 'axis',
-            //         },
-            //         dataset: {
-            //             source: [
-            //                 {data: '201903', tot_score: 80, dfa: 90},
-            //                 {data: '201906', tot_score: 89, dfa:40},
-            //             ]
-            //         },
-            //         xAxis: {type: 'category'},
-            //         yAxis: {},
-            //         series: [
-            //             {
-            //                 type: 'line',
-            //                 encode: {
-            //                     x: 'data',
-            //                     y: ['tot_score']
-            //                 }
-            //             }
-            //         ]
-            //     })
-            // },
             handlePlot() {
-                this.data = [];
+                let data = [];
                 const {monthStart, monthEnd} = this;
                 if (!(monthStart * monthEnd)) {
                     this.$Message.error('请先选择起止月份');
                     return false;
                 }
-                const quarters = getQuarters(monthStart, monthEnd);
-                if (quarters.length === 0) {
+                this.quarters = getQuarters(monthStart, monthEnd);
+                if (this.quarters.length === 0) {
                     this.$Message.error('所选期间没有季度月');
                     return false;
                 }
-                quarters.forEach((q) => {
+                this.quarters.forEach((q) => {
                     this.$api.result.getScore(q).then((response) => {
                         if (response.data.length === 0) {
                             this.$Message.warning(q + '的数据不存在，请检查')
                         } else {
-                            this.data.push(response.data[0]);
+                            data.push(response.data[0]);
                         }
                     }).catch(error => {
                         this.$Message.error('无法获取' + q + '得分');
                         console.log(error.response);
                     })
                 });
-                // this.renderChart();
+                this.options.dataset.source = data;
+                this.options.xAxis.data = this.quarters;
             }
         },
         mounted() {
