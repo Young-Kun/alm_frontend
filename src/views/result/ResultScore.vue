@@ -19,7 +19,12 @@
         </Card>
         <Card>
             <p slot="title"> 请选择指标项（可多选） </p>
-            <Button type="text" slot="extra" @click="clearSelected">清空</Button>
+            <div slot="extra">
+                <ButtonGroup>
+                    <Button type="primary" @click="allSelected">全选</Button>
+                    <Button type="warning" @click="clearSelected">清空</Button>
+                </ButtonGroup>
+            </div>
             <Select multiple v-model="selectedIndicators" label-in-value @on-change="handleChangeSelected">
                 <Option v-for="(indicator, idx) in indicators" :key="idx" :value="indicator.value">
                     {{ indicator.label }}
@@ -68,11 +73,12 @@
                     {value: 'liquidity', label: '流动性指标得分'},
                 ],
                 options: {
-                    legend: {Height: 200},
+                    legend: {},
                     tooltip: {trigger: 'axis',},
                     dataset: {source: []},
                     xAxis: {type: 'category', name: '季度', nameTextStyle: {fontSize: 16}},
                     yAxis: {name: '得分', nameTextStyle: {fontSize: 16}},
+                    grid: {top: 160},
                     series: []
                 },
 
@@ -99,6 +105,12 @@
             },
             clearSelected() {
                 this.selectedIndicators = [];
+            },
+            allSelected() {
+                this.selectedIndicators = [];
+                this.indicators.forEach((item) => {
+                    this.selectedIndicators.push(item.value)
+                })
             },
             handleChangeMonth() {
                 const {monthStart, monthEnd} = this;
@@ -127,7 +139,9 @@
                 selected.forEach((item) => {
                     this.options.series.push({type: 'line', name: item.label, encode: {y: item.value}});
                 });
-                this.$refs.chart.mergeOptions(this.options, true, true)
+                if (this.selectedIndicators.length){
+                    this.$refs.chart.mergeOptions(this.options, true, true)
+                }
             }
         },
         mounted() {
