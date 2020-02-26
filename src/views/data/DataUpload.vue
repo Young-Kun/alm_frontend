@@ -38,6 +38,8 @@
 </template>
 
 <script>
+    import {dateFormat} from "@/custom/func";
+
     export default {
         name: "DataUpload",
         data() {
@@ -98,15 +100,7 @@
                         const existed = this.existed;
                         this.options = {
                             disabledDate(date) {
-                                const y = date.getFullYear().toString();
-                                let m = date.getMonth() + 1;
-                                if (m < 10) {
-                                    m = '0' + m;
-                                } else {
-                                    m = m.toString();
-                                }
-                                const ym = y + m;
-                                return existed.indexOf(ym) > -1;
+                                return existed.indexOf(dateFormat(date)) > -1;
                             }
                         }
                     })

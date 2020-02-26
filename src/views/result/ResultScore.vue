@@ -1,40 +1,41 @@
 <template>
     <div>
         <Row :gutter="24">
-        <i-col :span="12">
-            <Card>
-                <p slot="title"> 请选择起止月份 </p>
-                <DatePicker ref="monthStart"
-                            type="month"
-                            :options="monthStartOptions"
-                            v-model="monthStart"
-                            @on-change="handleMonthStartChange"
-                            placeholder="选择起始月">
-                </DatePicker>
-                到
-                <DatePicker ref="monthEnd"
-                            type="month"
-                            :options="monthEndOptions"
-                            v-model="monthEnd"
-                            @on-change="handleMonthEndChange"
-                            placeholder="选择结束月">
-                </DatePicker>
-            </Card>
-        </i-col>
-        <i-col :span="12">
-            <Card>
-                <p slot="title"> 请选择指标项（可多选） </p>
-                <Button type="text" slot="extra" @click="clearSelected">清空</Button>
-                <Select multiple v-model="selectedIndicators">
-                    <Option v-for="(indicator, idx) in indicators" :key="idx" :value="indicator.value">
-                        {{ indicator.label }}
-                    </Option>
-                </Select>
-            </Card>
-        </i-col>
-    </Row>
+            <i-col :span="12">
+                <Card>
+                    <p slot="title"> 请选择起止月份 </p>
+                    <DatePicker ref="monthStart"
+                                type="month"
+                                :options="monthStartOptions"
+                                v-model="monthStart"
+                                @on-change="handleMonthStartChange"
+                                placeholder="选择起始月">
+                    </DatePicker>
+                    到
+                    <DatePicker ref="monthEnd"
+                                type="month"
+                                :options="monthEndOptions"
+                                v-model="monthEnd"
+                                @on-change="handleMonthEndChange"
+                                placeholder="选择结束月">
+                    </DatePicker>
+                </Card>
+            </i-col>
+            <i-col :span="12">
+                <Card>
+                    <p slot="title"> 请选择指标项（可多选） </p>
+                    <Button type="text" slot="extra" @click="clearSelected">清空</Button>
+                    <Select multiple v-model="selectedIndicators">
+                        <Option v-for="(indicator, idx) in indicators" :key="idx" :value="indicator.value">
+                            {{ indicator.label }}
+                        </Option>
+                    </Select>
+                </Card>
+            </i-col>
+        </Row>
         <Row style="margin-top: 12px">
-            <Card>
+            <Button type="primary" @click="handlePlot">查询</Button>
+            <Card style="margin-top: 12px">
 
             </Card>
         </Row>
@@ -42,6 +43,8 @@
 </template>
 
 <script>
+    import {getQuarters} from '@/custom/func'
+
     export default {
         name: "Scores",
         data() {
@@ -51,6 +54,7 @@
                 monthEnd: null,
                 monthStart: null,
                 selectedIndicators: null,
+                data: [],
                 indicators: [
                     {value: 'tot_score', label: '总分'},
                     {value: 'dur_score', label: '期限结构匹配得分'},
@@ -92,6 +96,32 @@
             },
             clearSelected() {
                 this.selectedIndicators = null;
+            },
+            handlePlot() {
+                this.data = [];
+                const {monthStart, monthEnd} = this;
+                if (!(monthStart * monthEnd)) {
+                    this.$Message.error('请先选择起止月份');
+                    return false;
+                }
+                const quarters = getQuarters(monthStart, monthEnd);
+                if (quarters.length === 0) {
+                    this.$Message.error('所选期间没有季度月');
+                    return false;
+                }
+                quarters.forEach((q) => {
+                    this.$api.result.getScore(q).then((response) => {
+                        if (response.data.length === 0) {
+                            this.$Message.warning(q + '的数据不存在，请检查')
+                        } else {
+                            this.data.push(response.data[0]);
+                        }
+                    }).catch(error => {
+                        this.$Message.error('无法获取' + q + '得分');
+                        console.log(error.response);
+                    })
+                })
+                console.log(this.data);
             }
         }
     }
