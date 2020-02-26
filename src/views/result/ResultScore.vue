@@ -1,45 +1,36 @@
 <template>
     <div>
-        <Row :gutter="24">
-            <i-col :span="12">
-                <Card>
-                    <p slot="title"> 请选择起止月份 </p>
-                    <DatePicker ref="monthStart"
-                                type="month"
-                                :options="monthStartOptions"
-                                v-model="monthStart"
-                                @on-change="handleMonthStartChange"
-                                placeholder="选择起始月">
-                    </DatePicker>
-                    到
-                    <DatePicker ref="monthEnd"
-                                type="month"
-                                :options="monthEndOptions"
-                                v-model="monthEnd"
-                                @on-change="handleMonthEndChange"
-                                placeholder="选择结束月">
-                    </DatePicker>
-                </Card>
-            </i-col>
-            <i-col :span="12">
-                <Card>
-                    <p slot="title"> 请选择指标项（可多选） </p>
-                    <Button type="text" slot="extra" @click="clearSelected">清空</Button>
-                    <Select multiple v-model="selectedIndicators">
-                        <Option v-for="(indicator, idx) in indicators" :key="idx" :value="indicator.value">
-                            {{ indicator.label }}
-                        </Option>
-                    </Select>
-                </Card>
-            </i-col>
-        </Row>
-        <Row style="margin-top: 12px">
-            <Card style="margin-top: 12px">
-                <div style="width: 100%; height: 500px">
-                    <v-chart :options="options"></v-chart>
-                </div>
-            </Card>
-        </Row>
+        <Card style="width: 500px; margin-bottom: 12px">
+            <DatePicker ref="monthStart"
+                        type="month"
+                        :options="monthStartOptions"
+                        v-model="monthStart"
+                        @on-change="handleMonthStartChange"
+                        placeholder="选择起始月">
+            </DatePicker>
+            到
+            <DatePicker ref="monthEnd"
+                        type="month"
+                        :options="monthEndOptions"
+                        v-model="monthEnd"
+                        @on-change="handleMonthEndChange"
+                        placeholder="选择结束月">
+            </DatePicker>
+        </Card>
+        <Card>
+            <p slot="title"> 请选择指标项（可多选） </p>
+            <Button type="text" slot="extra" @click="clearSelected">清空</Button>
+            <Select multiple v-model="selectedIndicators" label-in-value @on-change="handleChangeSelected">
+                <Option v-for="(indicator, idx) in indicators" :key="idx" :value="indicator.value">
+                    {{ indicator.label }}
+                </Option>
+            </Select>
+        </Card>
+        <Card style="margin-top: 12px" v-if="this.selectedIndicators.length">
+            <div style="width: 100%; height: 800px">
+                <v-chart :options="options" ref="chart"></v-chart>
+            </div>
+        </Card>
     </div>
 </template>
 
@@ -54,7 +45,7 @@
                 monthEndOptions: null,
                 monthEnd: new Date(),
                 monthStart: '20190101',
-                selectedIndicators: ['tot_score'],
+                selectedIndicators: ['tot_score', 'dur_score', 'cost_return_score', 'cash_flow_score'],
                 quarters: [],
                 indicators: [
                     {value: 'tot_score', label: '总分'},
@@ -77,15 +68,12 @@
                     {value: 'liquidity', label: '流动性指标得分'},
                 ],
                 options: {
-                    legend: {},
+                    legend: {Height: 200},
                     tooltip: {trigger: 'axis',},
                     dataset: {source: []},
                     xAxis: {type: 'category', name: '季度', nameTextStyle: {fontSize: 16}},
                     yAxis: {name: '得分', nameTextStyle: {fontSize: 16}},
-                    series: [
-                        {type: 'line', name: '总分', encode: {y: 'tot_score'}},
-                        {type: 'line', name: '期限结构匹配得分', encode: {y: 'dur_score'}},
-                    ]
+                    series: []
                 },
 
             }
@@ -98,7 +86,7 @@
                         return date < end;
                     }
                 };
-                this.handlePlot();
+                this.handleChangeMonth();
             },
             handleMonthEndChange(date) {
                 const start = new Date(date);
@@ -107,12 +95,12 @@
                         return date > start;
                     }
                 };
-                this.handlePlot();
+                this.handleChangeMonth();
             },
             clearSelected() {
-                this.selectedIndicators = null;
+                this.selectedIndicators = [];
             },
-            handlePlot() {
+            handleChangeMonth() {
                 const {monthStart, monthEnd} = this;
                 if (!(monthStart * monthEnd)) {
                     this.$Message.error('请先选择起止月份');
@@ -131,11 +119,19 @@
                     }
                 }).catch(error => {
                     console.log(error.response);
-                })
+                });
+
+            },
+            handleChangeSelected(selected) {
+                this.options.series = [];
+                selected.forEach((item) => {
+                    this.options.series.push({type: 'line', name: item.label, encode: {y: item.value}});
+                });
+                this.$refs.chart.mergeOptions(this.options, true, true)
             }
         },
         mounted() {
-            this.handlePlot();
+            this.handleChangeMonth();
         }
     }
 </script>
