@@ -54,7 +54,7 @@
                 monthEndOptions: null,
                 monthEnd: new Date(),
                 monthStart: '20190101',
-                selectedIndicators: null,
+                selectedIndicators: ['tot_score'],
                 quarters: [],
                 indicators: [
                     {value: 'tot_score', label: '总分'},
@@ -77,45 +77,14 @@
                     {value: 'liquidity', label: '流动性指标得分'},
                 ],
                 options: {
-                    legend: {
-                        data: ['总分', '期限结构匹配得分']
-                    },
-                    tooltip: {
-                        trigger: 'axis',
-                    },
-                    dataset: {
-                        source: []
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: [],
-                        name: '季度',
-                        nameTextStyle: {
-                            fontSize: 16
-                        }
-                    },
-                    yAxis: {
-                        name: '得分',
-                        nameTextStyle: {
-                            fontSize: 16
-                        }
-                    },
+                    legend: {},
+                    tooltip: {trigger: 'axis',},
+                    dataset: {source: []},
+                    xAxis: {type: 'category', name: '季度', nameTextStyle: {fontSize: 16}},
+                    yAxis: {name: '得分', nameTextStyle: {fontSize: 16}},
                     series: [
-                        {
-                            type: 'line',
-                            name: '总分',
-                            encode: {
-                                x: 'data',
-                                y: 'tot_score'
-                            }
-                        },
-                        {
-                            type: 'line',
-                            name: '期限结构匹配得分',
-                            encode: {
-                                y: 'dur_score'
-                            }
-                        },
+                        {type: 'line', name: '总分', encode: {y: 'tot_score'}},
+                        {type: 'line', name: '期限结构匹配得分', encode: {y: 'dur_score'}},
                     ]
                 },
 
@@ -144,7 +113,6 @@
                 this.selectedIndicators = null;
             },
             handlePlot() {
-                let data = [];
                 const {monthStart, monthEnd} = this;
                 if (!(monthStart * monthEnd)) {
                     this.$Message.error('请先选择起止月份');
@@ -155,20 +123,15 @@
                     this.$Message.error('所选期间没有季度月');
                     return false;
                 }
-                this.quarters.forEach((q) => {
-                    this.$api.result.getScore(q).then((response) => {
-                        if (response.data.length === 0) {
-                            this.$Message.warning(q + '的数据不存在，请检查')
-                        } else {
-                            data.push(response.data[0]);
-                        }
-                    }).catch(error => {
-                        this.$Message.error('无法获取' + q + '得分');
-                        console.log(error.response);
-                    })
-                });
-                this.options.dataset.source = data;
-                this.options.xAxis.data = this.quarters;
+                this.$api.result.getScore(this.quarters).then((response) => {
+                    if (response.data.length === 0) {
+                        this.$Message.warning('数据不存在，请检查')
+                    } else {
+                        this.options.dataset.source = response.data;
+                    }
+                }).catch(error => {
+                    console.log(error.response);
+                })
             }
         },
         mounted() {
