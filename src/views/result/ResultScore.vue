@@ -142,10 +142,19 @@
                 if (this.selectedIndicators.length){
                     this.$refs.chart.mergeOptions(this.options, true, true)
                 }
+            },
+            resizeChart() {
+                if (this.$refs.chart) {
+                    this.$refs.chart.resize();
+                }
             }
         },
         mounted() {
             this.handleChangeMonth();
+            window.addEventListener('resize', this.resizeChart);
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.resizeChart)
         }
     }
 </script>
