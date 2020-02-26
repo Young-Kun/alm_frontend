@@ -77,7 +77,9 @@
                     {value: 'liquidity', label: '流动性指标得分'},
                 ],
                 options: {
-                    legend: {},
+                    legend: {
+                        data: ['总分', '期限结构匹配得分']
+                    },
                     tooltip: {
                         trigger: 'axis',
                     },
@@ -101,9 +103,17 @@
                     series: [
                         {
                             type: 'line',
+                            name: '总分',
                             encode: {
                                 x: 'data',
                                 y: 'tot_score'
+                            }
+                        },
+                        {
+                            type: 'line',
+                            name: '期限结构匹配得分',
+                            encode: {
+                                y: 'dur_score'
                             }
                         },
                     ]

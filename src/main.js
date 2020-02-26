@@ -8,10 +8,7 @@ import 'font-awesome/css/font-awesome.min.css'
 import api from '@/api'
 import filters from "@/filters";
 import VCharts from 'vue-echarts';
-import 'echarts/lib/chart/line';
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/component/tooltip';
-import 'echarts/lib/component/polar';
+import 'echarts';
 
 
 Vue.component('v-chart', VCharts);
