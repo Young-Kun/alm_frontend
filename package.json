@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "echarts": "^4.6.0",
     "font-awesome": "^4.7.0",
     "view-design": "^4.0.0",
     "vue": "^2.6.11",

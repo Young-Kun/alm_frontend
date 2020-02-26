@@ -36,7 +36,9 @@
         <Row style="margin-top: 12px">
             <Button type="primary" @click="handlePlot">查询</Button>
             <Card style="margin-top: 12px">
-
+                <div>
+                    dfaf
+                </div>
             </Card>
         </Row>
     </div>

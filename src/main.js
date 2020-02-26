@@ -7,7 +7,9 @@ import './plugins/iview.js'
 import 'font-awesome/css/font-awesome.min.css'
 import api from '@/api'
 import filters from "@/filters";
+import echarts from 'echarts';
 
+Vue.prototype.$echarts = echarts;
 Vue.prototype.$api = api;
 Vue.config.productionTip = false;
 Object.keys(filters).forEach(key => {
