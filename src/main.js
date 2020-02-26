@@ -7,11 +7,15 @@ import './plugins/iview.js'
 import 'font-awesome/css/font-awesome.min.css'
 import api from '@/api'
 import filters from "@/filters";
+import VCharts from 'vue-echarts';
+import 'echarts/lib/chart/line';
+import 'echarts/lib/chart/bar';
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/polar';
 
 
-const echarts = require('echarts');
+Vue.component('v-chart', VCharts);
 
-Vue.prototype.$echarts = echarts;
 Vue.prototype.$api = api;
 Vue.config.productionTip = false;
 Object.keys(filters).forEach(key => {

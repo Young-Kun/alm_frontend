@@ -4,6 +4,10 @@ module.exports = {
     assetsDir: 'static',
     indexPath: 'index.html',
     filenameHashing: true,
+    transpileDependencies: [
+        'vue-echarts',
+        'resize-detector'
+    ],
     devServer: {
         host: 'localhost',
         port: 8080,

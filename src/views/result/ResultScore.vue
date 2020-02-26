@@ -36,7 +36,7 @@
         <Row style="margin-top: 12px">
             <Button type="primary" @click="handlePlot">查询</Button>
             <Card style="margin-top: 12px">
-                <div id="chart">
+                <div ref="chart" style="width: 100%; height: 500px">
 
                 </div>
             </Card>
@@ -53,8 +53,8 @@
             return {
                 monthStartOptions: null,
                 monthEndOptions: null,
-                monthEnd: null,
-                monthStart: null,
+                monthEnd: new Date(),
+                monthStart: '20190101',
                 selectedIndicators: null,
                 data: [],
                 indicators: [
@@ -99,6 +99,32 @@
             clearSelected() {
                 this.selectedIndicators = null;
             },
+            // renderChart() {
+            //     console.log(this.indicators);
+            //     this.$echarts.init(this.$refs.chart).setOption({
+            //         legend: {},
+            //         tooltip: {
+            //             trigger: 'axis',
+            //         },
+            //         dataset: {
+            //             source: [
+            //                 {data: '201903', tot_score: 80, dfa: 90},
+            //                 {data: '201906', tot_score: 89, dfa:40},
+            //             ]
+            //         },
+            //         xAxis: {type: 'category'},
+            //         yAxis: {},
+            //         series: [
+            //             {
+            //                 type: 'line',
+            //                 encode: {
+            //                     x: 'data',
+            //                     y: ['tot_score']
+            //                 }
+            //             }
+            //         ]
+            //     })
+            // },
             handlePlot() {
                 this.data = [];
                 const {monthStart, monthEnd} = this;
@@ -123,7 +149,11 @@
                         console.log(error.response);
                     })
                 });
+                // this.renderChart();
             }
+        },
+        mounted() {
+            this.handlePlot();
         }
     }
 </script>

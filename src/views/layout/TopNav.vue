@@ -4,7 +4,7 @@
         <Menu mode="horizontal" theme="light" class="menu">
             <MenuItem name="1" :to="{name:'test1'}">
                 <Icon type="ios-paper"/>
-                <span>测试</span>
+                <span>测试1</span>
             </MenuItem>
         </Menu>
         <!--右边菜单-->
