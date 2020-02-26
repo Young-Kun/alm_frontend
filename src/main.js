@@ -7,7 +7,9 @@ import './plugins/iview.js'
 import 'font-awesome/css/font-awesome.min.css'
 import api from '@/api'
 import filters from "@/filters";
-import echarts from 'echarts';
+
+
+const echarts = require('echarts');
 
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$api = api;

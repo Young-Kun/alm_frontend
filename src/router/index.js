@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import state from "@/store/state";
+import test from "@/router/test";
 import data from "@/router/data";
 import result from "@/router/result";
 
@@ -8,6 +9,7 @@ Vue.use(VueRouter);
 
 // 在这里把子路由引进来
 const children = merge([
+    test,
     data,
     result,
 ]);

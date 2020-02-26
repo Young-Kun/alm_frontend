@@ -36,8 +36,8 @@
         <Row style="margin-top: 12px">
             <Button type="primary" @click="handlePlot">查询</Button>
             <Card style="margin-top: 12px">
-                <div>
-                    dfaf
+                <div id="chart">
+
                 </div>
             </Card>
         </Row>
@@ -122,8 +122,7 @@
                         this.$Message.error('无法获取' + q + '得分');
                         console.log(error.response);
                     })
-                })
-                console.log(this.data);
+                });
             }
         }
     }
