@@ -27,7 +27,7 @@
                     <Button type="warning" @click="clearSelected">清空</Button>
                 </ButtonGroup>
             </div>
-            <Select multiple v-model="selected" label-in-value @on-change="handleChangeSelected">
+            <Select multiple v-model="selected" @on-change="handleChangeSelected">
                 <Option v-for="(indicator, idx) in indicators" :key="idx" :value="indicator.value">
                     {{ indicator.label }}
                 </Option>
@@ -53,12 +53,6 @@
                 monthEndOptions: null,
                 monthEnd: new Date(),
                 monthStart: date('201901'),
-                series: [
-                    {value: 'tot_score', label: '总分'},
-                    {value: 'dur_score', label: '期限结构匹配得分'},
-                    {value: 'cost_return_score', label: '成本收益匹配得分'},
-                    {value: 'cash_flow_score', label: '现金流匹配得分'}
-                ],
                 selected: ['tot_score', 'dur_score', 'cost_return_score', 'cash_flow_score'],
                 quarters: [],
                 indicators: [
@@ -97,17 +91,18 @@
             plotChart() {
                 const monthStart = ls.get('monthStart', 'date');
                 const monthEnd = ls.get('monthEnd', 'date');
-                const series = ls.get('series');
-                if (monthStart && monthEnd && series){
+                const selected = ls.get('series');
+                if (monthStart && monthEnd && selected){
                     this.monthStart = monthStart;
                     this.monthEnd = monthEnd;
-                    this.series = series;
+                    this.series = selected;
                 }else{
                     ls.set('monthStart', this.monthStart, 'date');
                     ls.set('monthEnd', this.monthEnd, 'date');
-                    ls.set('series', this.series);
+                    ls.set('selected', this.selected);
                 }
                 this.handleChangeMonth();
+                this.handleShowSeries();
             },
             handleChangeMonth() {
                 const {monthStart, monthEnd} = this;
@@ -159,14 +154,18 @@
                     this.selected.push(item.value)
                 })
             },
-            handleChangeSelected(selected) {
+            handleShowSeries() {
                 this.options.series = [];
-                selected.forEach((item) => {
+                this.selected.forEach((item) => {
                     this.options.series.push({type: 'line', name: item.label, encode: {y: item.value}});
                 });
                 if (this.selected.length) {
                     this.$refs.chart.mergeOptions(this.options, true, true)
                 }
+            },
+            handleChangeSelected() {
+                ls.set('selected', this.selected);
+                this.handleShowSeries();
             },
             resizeChart() {
                 if (this.$refs.chart) {
