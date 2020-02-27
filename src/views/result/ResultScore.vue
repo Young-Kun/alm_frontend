@@ -27,13 +27,13 @@
                     <Button type="warning" @click="clearSelected">清空</Button>
                 </ButtonGroup>
             </div>
-            <Select multiple v-model="selectedIndicators" label-in-value @on-change="handleChangeSelected">
+            <Select multiple v-model="selected" label-in-value @on-change="handleChangeSelected">
                 <Option v-for="(indicator, idx) in indicators" :key="idx" :value="indicator.value">
                     {{ indicator.label }}
                 </Option>
             </Select>
         </Card>
-        <Card style="margin-top: 12px" v-if="this.selectedIndicators.length">
+        <Card style="margin-top: 12px" v-if="this.selected.length">
             <div style="width: 100%; height: 800px">
                 <v-chart :options="options" ref="chart"></v-chart>
             </div>
@@ -59,7 +59,7 @@
                     {value: 'cost_return_score', label: '成本收益匹配得分'},
                     {value: 'cash_flow_score', label: '现金流匹配得分'}
                 ],
-                selectedIndicators: ['tot_score', 'dur_score', 'cost_return_score', 'cash_flow_score'],
+                selected: ['tot_score', 'dur_score', 'cost_return_score', 'cash_flow_score'],
                 quarters: [],
                 indicators: [
                     {value: 'tot_score', label: '总分'},
@@ -151,12 +151,12 @@
                 this.handleChangeMonth();
             },
             clearSelected() {
-                this.selectedIndicators = [];
+                this.selected = [];
             },
             allSelected() {
-                this.selectedIndicators = [];
+                this.selected = [];
                 this.indicators.forEach((item) => {
-                    this.selectedIndicators.push(item.value)
+                    this.selected.push(item.value)
                 })
             },
             handleChangeSelected(selected) {
@@ -164,7 +164,7 @@
                 selected.forEach((item) => {
                     this.options.series.push({type: 'line', name: item.label, encode: {y: item.value}});
                 });
-                if (this.selectedIndicators.length) {
+                if (this.selected.length) {
                     this.$refs.chart.mergeOptions(this.options, true, true)
                 }
             },
