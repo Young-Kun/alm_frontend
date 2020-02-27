@@ -8,6 +8,8 @@ export const dateFormat = (date) => {
 
 // 获取两个日期之间的所有月份
 export const getMonths = (startDate, endDate) => {
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
     if (startDate > endDate) {
         console.log('起始日期不能大于截止日期');
         return false;
