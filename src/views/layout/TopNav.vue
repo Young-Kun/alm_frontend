@@ -25,7 +25,7 @@
 
 <script>
     import {mapGetters, mapActions} from 'vuex'
-    import cookie from "@/store/cookie";
+    import cookie from "@/custom/cookie";
 
     export default {
         name: "TopNav",

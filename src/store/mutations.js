@@ -1,5 +1,5 @@
 import * as types from '@/store/mutationTypes';
-import cookie from '@/store/cookie';
+import cookie from '@/custom/cookie';
 
 export default {
     [types.SET_USER](state) {
