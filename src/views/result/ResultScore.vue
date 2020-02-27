@@ -42,7 +42,7 @@
 </template>
 
 <script>
-    import {date, dateStr, getQuarters} from '@/custom/func'
+    import {date, getQuarters} from '@/custom/func'
     import ls from '@/custom/localStorage'
 
     export default {
@@ -95,14 +95,19 @@
         },
         methods: {
             plotChart() {
-                const monthStart = ls.get('monthStart');
-                const monthEnd = ls.get('monthEnd');
+                const monthStart = ls.get('monthStart', 'date');
+                const monthEnd = ls.get('monthEnd', 'date');
                 const series = ls.get('series');
                 if (monthStart && monthEnd && series){
                     this.monthStart = monthStart;
                     this.monthEnd = monthEnd;
                     this.series = series;
+                }else{
+                    ls.set('monthStart', this.monthStart, 'date');
+                    ls.set('monthEnd', this.monthEnd, 'date');
+                    ls.set('series', this.series);
                 }
+                this.handleChangeMonth();
             },
             handleChangeMonth() {
                 const {monthStart, monthEnd} = this;
@@ -132,6 +137,7 @@
                         return date < end;
                     }
                 };
+                ls.set('monthStart', this.monthStart, 'date');
                 this.handleChangeMonth();
             },
             handleMonthEndChange(d) {
@@ -141,6 +147,7 @@
                         return date > start;
                     }
                 };
+                ls.set('monthEnd', this.monthEnd, 'date');
                 this.handleChangeMonth();
             },
             clearSelected() {
