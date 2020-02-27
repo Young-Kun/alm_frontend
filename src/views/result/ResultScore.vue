@@ -92,17 +92,16 @@
                 const monthStart = ls.get('monthStart', 'date');
                 const monthEnd = ls.get('monthEnd', 'date');
                 const selected = ls.get('selected');
-                if (monthStart && monthEnd && selected){
+                if (monthStart && monthEnd && selected) {
                     this.monthStart = monthStart;
                     this.monthEnd = monthEnd;
                     this.selected = selected;
-                }else{
+                } else {
                     ls.set('monthStart', this.monthStart, 'date');
                     ls.set('monthEnd', this.monthEnd, 'date');
                     ls.set('selected', this.selected);
                 }
                 this.handleChangeMonth();
-                this.handleShowSeries();
             },
             handleChangeMonth() {
                 const {monthStart, monthEnd} = this;
@@ -157,7 +156,15 @@
             handleShowSeries() {
                 this.options.series = [];
                 this.selected.forEach((item) => {
-                    this.options.series.push({type: 'line', name: item.label, encode: {y: item.value}});
+                    let label = null;
+                    this.indicators.forEach((opt) => {
+                        if (opt.value === item) {
+                            label = opt.label;
+                        }
+                    });
+                    this.options.series.push({
+                        type: 'line', name: label, encode: {y: item}
+                    });
                 });
                 if (this.selected.length) {
                     this.$refs.chart.mergeOptions(this.options, true, true)
@@ -173,7 +180,7 @@
                 }
             }
         },
-        mounted() {
+        beforeMount() {
             this.plotChart();
             window.addEventListener('resize', this.resizeChart);
         },
