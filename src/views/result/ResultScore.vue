@@ -5,6 +5,7 @@
                         type="month"
                         :options="monthStartOptions"
                         v-model="monthStart"
+                        format="yyyyMM"
                         @on-change="handleMonthStartChange"
                         placeholder="选择起始月">
             </DatePicker>
@@ -13,6 +14,7 @@
                         type="month"
                         :options="monthEndOptions"
                         v-model="monthEnd"
+                        format="yyyyMM"
                         @on-change="handleMonthEndChange"
                         placeholder="选择结束月">
             </DatePicker>
@@ -40,7 +42,7 @@
 </template>
 
 <script>
-    import {getQuarters} from '@/custom/func'
+    import {date, dateStr, getQuarters} from '@/custom/func'
 
     export default {
         name: "Scores",
@@ -49,7 +51,7 @@
                 monthStartOptions: null,
                 monthEndOptions: null,
                 monthEnd: new Date(),
-                monthStart: '20190101',
+                monthStart: date('201901'),
                 selectedIndicators: ['tot_score', 'dur_score', 'cost_return_score', 'cash_flow_score'],
                 quarters: [],
                 indicators: [
@@ -85,36 +87,13 @@
             }
         },
         methods: {
-            handleMonthStartChange(date) {
-                const end = new Date(new Date(date) - 24 * 60 * 60 * 1000);
-                this.monthEndOptions = {
-                    disabledDate(date) {
-                        return date < end;
-                    }
-                };
-                this.handleChangeMonth();
-            },
-            handleMonthEndChange(date) {
-                const start = new Date(date);
-                this.monthStartOptions = {
-                    disabledDate(date) {
-                        return date > start;
-                    }
-                };
-                this.handleChangeMonth();
-            },
-            clearSelected() {
-                this.selectedIndicators = [];
-            },
-            allSelected() {
-                this.selectedIndicators = [];
-                this.indicators.forEach((item) => {
-                    this.selectedIndicators.push(item.value)
-                })
+            plotChart() {
+                console.log(dateStr(this.monthStart));
+                console.log(date(dateStr(this.monthStart)));
             },
             handleChangeMonth() {
                 const {monthStart, monthEnd} = this;
-                if (!(monthStart * monthEnd)) {
+                if (!(monthStart && monthEnd)) {
                     this.$Message.error('请先选择起止月份');
                     return false;
                 }
@@ -132,14 +111,40 @@
                 }).catch(error => {
                     console.log(error.response);
                 });
-
+            },
+            handleMonthStartChange(d) {
+                const end = date(d);
+                this.monthEndOptions = {
+                    disabledDate(date) {
+                        return date < end;
+                    }
+                };
+                this.handleChangeMonth();
+            },
+            handleMonthEndChange(d) {
+                const start = date(d);
+                this.monthStartOptions = {
+                    disabledDate(date) {
+                        return date > start;
+                    }
+                };
+                // this.handleChangeMonth();
+            },
+            clearSelected() {
+                this.selectedIndicators = [];
+            },
+            allSelected() {
+                this.selectedIndicators = [];
+                this.indicators.forEach((item) => {
+                    this.selectedIndicators.push(item.value)
+                })
             },
             handleChangeSelected(selected) {
                 this.options.series = [];
                 selected.forEach((item) => {
                     this.options.series.push({type: 'line', name: item.label, encode: {y: item.value}});
                 });
-                if (this.selectedIndicators.length){
+                if (this.selectedIndicators.length) {
                     this.$refs.chart.mergeOptions(this.options, true, true)
                 }
             },
@@ -150,7 +155,7 @@
             }
         },
         mounted() {
-            this.handleChangeMonth();
+            this.plotChart();
             window.addEventListener('resize', this.resizeChart);
         },
         beforeDestroy() {
