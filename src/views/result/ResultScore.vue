@@ -91,11 +91,11 @@
             plotChart() {
                 const monthStart = ls.get('monthStart', 'date');
                 const monthEnd = ls.get('monthEnd', 'date');
-                const selected = ls.get('series');
+                const selected = ls.get('selected');
                 if (monthStart && monthEnd && selected){
                     this.monthStart = monthStart;
                     this.monthEnd = monthEnd;
-                    this.series = selected;
+                    this.selected = selected;
                 }else{
                     ls.set('monthStart', this.monthStart, 'date');
                     ls.set('monthEnd', this.monthEnd, 'date');
