@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import {dateFormat} from "@/custom/func";
+    import {dateStr} from "@/custom/func";
 
     export default {
         name: "DataUpload",
@@ -100,7 +100,7 @@
                         const existed = this.existed;
                         this.options = {
                             disabledDate(date) {
-                                return existed.indexOf(dateFormat(date)) > -1;
+                                return existed.indexOf(dateStr(date)) > -1;
                             }
                         }
                     })
