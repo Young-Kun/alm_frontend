@@ -43,6 +43,7 @@
 
 <script>
     import {date, dateStr, getQuarters} from '@/custom/func'
+    import ls from '@/custom/localStorage'
 
     export default {
         name: "Scores",
@@ -52,6 +53,12 @@
                 monthEndOptions: null,
                 monthEnd: new Date(),
                 monthStart: date('201901'),
+                series: [
+                    {value: 'tot_score', label: '总分'},
+                    {value: 'dur_score', label: '期限结构匹配得分'},
+                    {value: 'cost_return_score', label: '成本收益匹配得分'},
+                    {value: 'cash_flow_score', label: '现金流匹配得分'}
+                ],
                 selectedIndicators: ['tot_score', 'dur_score', 'cost_return_score', 'cash_flow_score'],
                 quarters: [],
                 indicators: [
@@ -88,8 +95,14 @@
         },
         methods: {
             plotChart() {
-                console.log(dateStr(this.monthStart));
-                console.log(date(dateStr(this.monthStart)));
+                const monthStart = ls.get('monthStart');
+                const monthEnd = ls.get('monthEnd');
+                const series = ls.get('series');
+                if (monthStart && monthEnd && series){
+                    this.monthStart = monthStart;
+                    this.monthEnd = monthEnd;
+                    this.series = series;
+                }
             },
             handleChangeMonth() {
                 const {monthStart, monthEnd} = this;
@@ -128,7 +141,7 @@
                         return date > start;
                     }
                 };
-                // this.handleChangeMonth();
+                this.handleChangeMonth();
             },
             clearSelected() {
                 this.selectedIndicators = [];
