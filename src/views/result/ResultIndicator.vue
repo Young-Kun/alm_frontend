@@ -56,7 +56,7 @@
                     T: {
                         grid: {left: '60'},
                         title: {text: '公司整体'},
-                        tooltip: {trigger: 'axis', axisPointer:{type: 'shadow'}},
+                        tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
                         dataset: {source: []},
                         yAxis: {type: 'category'},
                         xAxis: {show: false},
@@ -65,7 +65,7 @@
                     C: {
                         grid: {left: '60'},
                         title: {text: '传统账户'},
-                        tooltip: {trigger: 'axis', axisPointer:{type: 'shadow'}},
+                        tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
                         dataset: {source: []},
                         yAxis: {type: 'category'},
                         xAxis: {show: false},
@@ -74,7 +74,7 @@
                     P: {
                         grid: {left: '60'},
                         title: {text: '分红账户'},
-                        tooltip: {trigger: 'axis', axisPointer:{type: 'shadow'}},
+                        tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
                         dataset: {source: []},
                         yAxis: {type: 'category'},
                         xAxis: {show: false},
@@ -83,7 +83,7 @@
                     U: {
                         grid: {left: '60'},
                         title: {text: '万能账户'},
-                        tooltip: {trigger: 'axis', axisPointer:{type: 'shadow'}},
+                        tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
                         dataset: {source: []},
                         yAxis: {type: 'category'},
                         xAxis: {show: false},
@@ -125,6 +125,9 @@
                 };
             },
             handleMonthStartIndChange(d) {
+                if (!d) {
+                    return
+                }
                 const end = date(d);
                 this.monthEndIndOptions = {
                     disabledDate(date) {
@@ -135,6 +138,9 @@
                 this.plot();
             },
             handleMonthEndIndChange(d) {
+                if (!d) {
+                    return
+                }
                 const start = date(d);
                 this.monthStartIndOptions = {
                     disabledDate(date) {
@@ -148,22 +154,24 @@
                 let reserve = null;
                 this.$api.result.getReserve(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
                     reserve = response.data;
-                });
-                this.$api.result.getAssets(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
-                    const data = response.data;
-                    this.accounts.forEach((acc) => {
-                        const reserve_acc = getArray(getObjOfAcc(reserve, acc), 'reserve');
-                        let opt = this.asset_options[acc];
-                        opt.dataset.source = getObjOfAcc(data, acc);
-                        opt.series = [];
-                        opt.series.push(
-                            {type: 'line', data:reserve_acc, name: '会计准备金', lineStyle: {type: 'dashed'}},
-                            {type: 'line', encode: {x: 'tot'}, name: '期末资金运用净额'},
-                            {type: 'bar', encode: {x: 'cash'}, name: '现金及流动性管理工具', stack: acc, barWidth: '36%'},
-                            {type: 'bar', encode: {x: 'fixed_income'}, name: '固定收益类投资资产', stack: acc},
-                            {type: 'bar', encode: {x: 'equity'}, name: '权益类投资资产', stack: acc},
-                            {type: 'bar', encode: {x: 'loan'}, name: '保单贷款', stack: acc},
-                        )
+                    this.$api.result.getAssets(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
+                        const data = response.data;
+                        this.accounts.forEach((acc) => {
+                            const reserve_acc = getArray(getObjOfAcc(reserve, acc), 'reserve');
+                            let opt = this.asset_options[acc];
+                            opt.dataset.source = getObjOfAcc(data, acc);
+                            opt.series = [];
+                            opt.series.push(
+                                {type: 'line', data: reserve_acc, name: '会计准备金', lineStyle: {type: 'dashed'}},
+                                {type: 'line', encode: {x: 'tot'}, name: '期末资金运用净额'},
+                                {type: 'bar', encode: {x: 'cash'}, name: '现金及流动性管理工具', stack: acc, barWidth: '36%'},
+                                {type: 'bar', encode: {x: 'fixed_income'}, name: '固定收益类投资资产', stack: acc},
+                                {type: 'bar', encode: {x: 'equity'}, name: '权益类投资资产', stack: acc},
+                                {type: 'bar', encode: {x: 'loan'}, name: '保单贷款', stack: acc},
+                            )
+                        });
+                    }).catch(error => {
+                        console.log(error.response);
                     });
                 }).catch(error => {
                     console.log(error.response);
