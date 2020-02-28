@@ -122,23 +122,27 @@
                     console.log(error.response);
                 });
             },
-            handleMonthStartChange(d) {
-                const end = date(d);
+            setFloor(start) {
                 this.monthEndOptions = {
                     disabledDate(date) {
-                        return date < end;
+                        return date < start;
                     }
                 };
+            },
+            setCeiling(end) {
+                this.monthStartOptions = {
+                    disabledDate(date) {
+                        return date > end;
+                    }
+                };
+            },
+            handleMonthStartChange(d) {
+                this.setFloor(date(d));
                 ls.set('monthStart', this.monthStart, 'date');
                 this.handleChangeMonth();
             },
             handleMonthEndChange(d) {
-                const start = date(d);
-                this.monthStartOptions = {
-                    disabledDate(date) {
-                        return date > start;
-                    }
-                };
+                this.setCeiling(date(d));
                 ls.set('monthEnd', this.monthEnd, 'date');
                 this.handleChangeMonth();
             },
