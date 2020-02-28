@@ -21,11 +21,11 @@
         </Card>
         <Card>
             <Tabs value="assets" type="card">
-                <TabPane label="资产负债" name="assets">
+                <TabPane label="资产规模" name="assets">
                     <Row type="flex">
-                        <i-col :xs="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
+                        <i-col :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
                             <div class="chart-wrapper">
-                                <v-chart :options="al_options[acc]"></v-chart>
+                                <v-chart :options="asset_options[acc]" ref="chart"></v-chart>
                             </div>
                         </i-col>
                     </Row>
@@ -52,8 +52,9 @@
                 monthStartInd: date('201901'),
                 monthEndInd: new Date(),
                 accounts: ['T', 'C', 'P', 'U'],
-                al_options: {
+                asset_options: {
                     T: {
+                        grid:{left: '60'},
                         title: {text: '公司整体'},
                         tooltip: {trigger: 'axis'},
                         dataset: {source: []},
@@ -62,6 +63,7 @@
                         series: []
                     },
                     C: {
+                        grid:{left: '60'},
                         title: {text: '传统账户'},
                         tooltip: {trigger: 'axis'},
                         dataset: {source: []},
@@ -70,6 +72,7 @@
                         series: []
                     },
                     P: {
+                        grid:{left: '60'},
                         title: {text: '分红账户'},
                         tooltip: {trigger: 'axis'},
                         dataset: {source: []},
@@ -78,6 +81,7 @@
                         series: []
                     },
                     U: {
+                        grid:{left: '60'},
                         title: {text: '万能账户'},
                         tooltip: {trigger: 'axis'},
                         dataset: {source: []},
@@ -138,9 +142,8 @@
             plotAl() {
                 this.$api.result.getAssets(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
                     const data = response.data;
-                    // this.al_options.title.dataset.source = getObjOfAcc(data, 'T');
                     this.accounts.forEach((acc) => {
-                        let opt = this.al_options[acc];
+                        let opt = this.asset_options[acc];
                         opt.dataset.source = getObjOfAcc(data, acc);
                         opt.series = [];
                         opt.series.push(
@@ -154,10 +157,22 @@
                 }).catch(error => {
                     console.log(error.response);
                 });
+            },
+            resizeChart() {
+                const charts = this.$refs.chart;
+                if (charts.length) {
+                    charts.forEach((chart) => {
+                        chart.resize();
+                    });
+                }
             }
         },
         beforeMount() {
             this.plotChartInd();
+            window.addEventListener('resize', this.resizeChart);
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.resizeChart)
         }
     }
 </script>
@@ -166,5 +181,6 @@
     .chart-wrapper {
         width: 100%;
         height: 400px;
+        margin-top: 48px;
     }
 </style>
