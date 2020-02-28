@@ -105,6 +105,9 @@
                 }
                 this.setFloor(this.monthStartInd);
                 this.setCeiling(this.monthEndInd);
+                this.plot();
+            },
+            plot() {
                 this.plotAl();
             },
             setFloor(start) {
@@ -129,6 +132,7 @@
                     }
                 };
                 ls.set('monthStartInd', this.monthStartInd, 'date');
+                this.plot();
             },
             handleMonthEndIndChange(d) {
                 const start = date(d);
@@ -138,6 +142,7 @@
                     }
                 };
                 ls.set('monthEndInd', this.monthEndInd, 'date');
+                this.plot();
             },
             plotAl() {
                 this.$api.result.getAssets(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
