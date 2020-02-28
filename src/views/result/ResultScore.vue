@@ -42,7 +42,7 @@
 </template>
 
 <script>
-    import {date, getQuarters} from '@/custom/func'
+    import {date, dateStr, getQuarters} from '@/custom/func'
     import ls from '@/custom/localStorage'
 
     export default {
@@ -112,7 +112,7 @@
                     this.$Message.error('所选期间没有季度月');
                     return false;
                 }
-                this.$api.result.getScore().then((response) => {
+                this.$api.result.getScore(dateStr(monthStart), dateStr(monthEnd)).then((response) => {
                     if (response.data.length === 0) {
                         this.$Message.warning('数据不存在，请检查')
                     } else {

@@ -4,8 +4,8 @@
 
 const result = {
     // 获取量化评估得分
-    getScore(quarters) {
-        return window.axios.get('/result/score/', {params: {quarters}});
+    getScore(monthStart, monthEnd) {
+        return window.axios.get('/result/score/', {params: {monthStart, monthEnd}});
     },
 };
 
