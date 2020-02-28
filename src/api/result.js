@@ -7,6 +7,10 @@ const result = {
     getScore(monthStart, monthEnd) {
         return window.axios.get('/result/score/', {params: {monthStart, monthEnd}});
     },
+    // 获取资产大类
+    getAssets(monthStart, monthEnd) {
+        return window.axios.get('/result/assets/', {params: {monthStart, monthEnd}});
+    }
 };
 
 export default result

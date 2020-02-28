@@ -41,3 +41,19 @@ export const getQuarters = (startDate, endDate) => {
     });
     return q_list;
 };
+
+// 获取某账户的数据
+export const getObjOfAcc = (arr, acc) => {
+    return arr.filter((item) => {
+        return item.account === acc;
+    })
+};
+
+// 获取对象数组中某一属性的值，返回数组
+export const getArray = (arr, key) => {
+    let result = [];
+    arr.forEach((item) => {
+        result.push(item[key])
+    });
+    return result
+};
