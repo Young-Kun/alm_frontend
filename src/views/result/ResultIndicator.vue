@@ -21,11 +21,11 @@
         </Card>
         <Card>
             <Tabs value="assets" type="card">
-                <TabPane label="资产规模" name="assets">
+                <TabPane label="资产负债规模" name="assets">
                     <Row type="flex">
                         <i-col :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
                             <div class="chart-wrapper">
-                                <v-chart :options="asset_options[acc]" ref="chart"></v-chart>
+                                <v-chart :options="asset_options[acc]" ref="chart" theme="default"></v-chart>
                             </div>
                         </i-col>
                     </Row>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-    import {date, dateStr, getObjOfAcc} from "@/custom/func";
+    import {date, dateStr, getArray, getObjOfAcc} from "@/custom/func";
     import ls from "@/custom/localStorage";
 
     export default {
@@ -54,36 +54,36 @@
                 accounts: ['T', 'C', 'P', 'U'],
                 asset_options: {
                     T: {
-                        grid:{left: '60'},
+                        grid: {left: '60'},
                         title: {text: '公司整体'},
-                        tooltip: {trigger: 'axis'},
+                        tooltip: {trigger: 'axis', axisPointer:{type: 'shadow'}},
                         dataset: {source: []},
                         yAxis: {type: 'category'},
                         xAxis: {show: false},
                         series: []
                     },
                     C: {
-                        grid:{left: '60'},
+                        grid: {left: '60'},
                         title: {text: '传统账户'},
-                        tooltip: {trigger: 'axis'},
+                        tooltip: {trigger: 'axis', axisPointer:{type: 'shadow'}},
                         dataset: {source: []},
                         yAxis: {type: 'category'},
                         xAxis: {show: false},
                         series: []
                     },
                     P: {
-                        grid:{left: '60'},
+                        grid: {left: '60'},
                         title: {text: '分红账户'},
-                        tooltip: {trigger: 'axis'},
+                        tooltip: {trigger: 'axis', axisPointer:{type: 'shadow'}},
                         dataset: {source: []},
                         yAxis: {type: 'category'},
                         xAxis: {show: false},
                         series: []
                     },
                     U: {
-                        grid:{left: '60'},
+                        grid: {left: '60'},
                         title: {text: '万能账户'},
-                        tooltip: {trigger: 'axis'},
+                        tooltip: {trigger: 'axis', axisPointer:{type: 'shadow'}},
                         dataset: {source: []},
                         yAxis: {type: 'category'},
                         xAxis: {show: false},
@@ -145,15 +145,21 @@
                 this.plot();
             },
             plotAl() {
+                let reserve = null;
+                this.$api.result.getReserve(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
+                    reserve = response.data;
+                });
                 this.$api.result.getAssets(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
                     const data = response.data;
                     this.accounts.forEach((acc) => {
+                        const reserve_acc = getArray(getObjOfAcc(reserve, acc), 'reserve');
                         let opt = this.asset_options[acc];
                         opt.dataset.source = getObjOfAcc(data, acc);
                         opt.series = [];
                         opt.series.push(
+                            {type: 'line', data:reserve_acc, name: '会计准备金', lineStyle: {type: 'dashed'}},
                             {type: 'line', encode: {x: 'tot'}, name: '期末资金运用净额'},
-                            {type: 'bar', encode: {x: 'cash'}, name: '现金及流动性管理工具', stack: acc, barWidth:'50%'},
+                            {type: 'bar', encode: {x: 'cash'}, name: '现金及流动性管理工具', stack: acc, barWidth: '36%'},
                             {type: 'bar', encode: {x: 'fixed_income'}, name: '固定收益类投资资产', stack: acc},
                             {type: 'bar', encode: {x: 'equity'}, name: '权益类投资资产', stack: acc},
                             {type: 'bar', encode: {x: 'loan'}, name: '保单贷款', stack: acc},

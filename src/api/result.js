@@ -10,6 +10,10 @@ const result = {
     // 获取资产大类
     getAssets(monthStart, monthEnd) {
         return window.axios.get('/result/assets/', {params: {monthStart, monthEnd}});
+    },
+    // 获取会计准备金
+    getReserve(monthStart, monthEnd) {
+        return window.axios.get('/result/reserve/', {params: {monthStart, monthEnd}});
     }
 };
 
