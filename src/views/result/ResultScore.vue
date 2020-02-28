@@ -54,7 +54,6 @@
                 monthEnd: new Date(),
                 monthStart: date('201901'),
                 selected: ['tot_score', 'dur_score', 'cost_return_score', 'cash_flow_score'],
-                quarters: [],
                 indicators: [
                     {value: 'tot_score', label: '总分'},
                     {value: 'dur_score', label: '期限结构匹配得分'},
@@ -109,12 +108,11 @@
                     this.$Message.error('请先选择起止月份');
                     return false;
                 }
-                this.quarters = getQuarters(monthStart, monthEnd);
-                if (this.quarters.length === 0) {
+                if (getQuarters(monthStart, monthEnd).length === 0) {
                     this.$Message.error('所选期间没有季度月');
                     return false;
                 }
-                this.$api.result.getScore(this.quarters).then((response) => {
+                this.$api.result.getScore().then((response) => {
                     if (response.data.length === 0) {
                         this.$Message.warning('数据不存在，请检查')
                     } else {
