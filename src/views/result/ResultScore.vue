@@ -106,14 +106,6 @@
             },
             handleChangeMonth() {
                 const {monthStart, monthEnd} = this;
-                if (!(monthStart && monthEnd)) {
-                    this.$Message.error('请先选择起止月份');
-                    return false;
-                }
-                if (getQuarters(monthStart, monthEnd).length === 0) {
-                    this.$Message.error('所选期间没有季度月');
-                    return false;
-                }
                 this.$api.result.getScore(dateStr(monthStart), dateStr(monthEnd)).then((response) => {
                     if (response.data.length === 0) {
                         this.$Message.warning('数据不存在，请检查')
@@ -139,11 +131,17 @@
                 };
             },
             handleMonthStartChange(d) {
+                if (!d || getQuarters(date(d), this.monthEnd).length === 0) {
+                    return
+                }
                 this.setFloor(date(d));
                 ls.set('monthStart', this.monthStart, 'date');
                 this.handleChangeMonth();
             },
             handleMonthEndChange(d) {
+                if (!d || getQuarters(this.monthStart, date(d)).length === 0) {
+                    return
+                }
                 this.setCeiling(date(d));
                 ls.set('monthEnd', this.monthEnd, 'date');
                 this.handleChangeMonth();

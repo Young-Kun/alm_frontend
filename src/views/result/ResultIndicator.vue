@@ -40,7 +40,7 @@
 </template>
 
 <script>
-    import {date, dateStr, getArray, getObjOfAcc} from "@/custom/func";
+    import {date, dateStr, getArray, getObjOfAcc, getQuarters} from "@/custom/func";
     import ls from "@/custom/localStorage";
 
     export default {
@@ -125,7 +125,7 @@
                 };
             },
             handleMonthStartIndChange(d) {
-                if (!d) {
+                if (!d || getQuarters(date(d), this.monthEndInd).length === 0) {
                     return
                 }
                 const end = date(d);
@@ -138,7 +138,7 @@
                 this.plot();
             },
             handleMonthEndIndChange(d) {
-                if (!d) {
+                if (!d || getQuarters(this.monthStartInd, date(d)).length === 0) {
                     return
                 }
                 const start = date(d);
