@@ -100,6 +100,8 @@
                     ls.set('monthEnd', this.monthEnd, 'date');
                     ls.set('selected', this.selected);
                 }
+                this.setFloor(this.monthStart);
+                this.setCeiling(this.monthEnd);
                 this.handleChangeMonth();
             },
             handleChangeMonth() {

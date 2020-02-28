@@ -60,6 +60,22 @@
                     ls.set('monthStartInd', this.monthStartInd, 'date');
                     ls.set('monthEndInd', this.monthEndInd, 'date');
                 }
+                this.setFloor(this.monthStartInd);
+                this.setCeiling(this.monthEndInd);
+            },
+            setFloor(start) {
+                this.monthEndIndOptions = {
+                    disabledDate(date) {
+                        return date < start;
+                    }
+                };
+            },
+            setCeiling(end) {
+                this.monthStartIndOptions = {
+                    disabledDate(date) {
+                        return date > end;
+                    }
+                };
             },
             handleMonthStartIndChange(d) {
                 const end = date(d);
