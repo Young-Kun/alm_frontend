@@ -52,6 +52,18 @@
                 };
                 this.$emit('end-change')
             }
+        },
+        mounted() {
+            this.endOptions = {
+                disabledDate(date) {
+                    return date < this.endDate;
+                }
+            };
+            this.startOptions = {
+                disabledDate(date) {
+                    return date > this.startDate;
+                }
+            };
         }
     }
 </script>
