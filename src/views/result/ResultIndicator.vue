@@ -69,6 +69,12 @@
                             <Radio :label="q" v-for="(q, idx) in quarters" :key="idx">{{ q }}</Radio>
                         </RadioGroup>
                     </div>
+                    <div style="margin: 20px">
+                        <RadioGroup v-model="cashFlowScenario" @on-change="handleScenarioChange">
+                            <Radio label="_base">基本情景</Radio>
+                            <Radio label="_stress">压力情景</Radio>
+                        </RadioGroup>
+                    </div>
                     <Row type="flex">
                         <i-col :xs="24" :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
                             <Card class="chart-wrapper">
@@ -101,6 +107,7 @@
         name: "ResultIndicator",
         data() {
             return {
+                cashFlowScenario: '_base',
                 cashFlowPeriods: ['q1', 'q2', 'q3', 'q4', 'y2', 'y3'],
                 cashFlowQuarter: '201912',
                 costReturnAcc: 'T',
@@ -169,18 +176,21 @@
                 const tabsValue = ls.get('tabsValue');
                 const costReturnAcc = ls.get('costReturnAcc');
                 const cashFlowQuarter = ls.get('cashFlowQuarter');
-                if (monthStartInd && monthEndInd && tabsValue && costReturnAcc && cashFlowQuarter) {
+                const cashFlowScenario = ls.get('cashFlowScenario');
+                if (monthStartInd && monthEndInd && tabsValue && costReturnAcc && cashFlowQuarter && cashFlowScenario) {
                     this.monthStartInd = monthStartInd;
                     this.monthEndInd = monthEndInd;
                     this.tabsValue = tabsValue;
                     this.costReturnAcc = costReturnAcc;
                     this.cashFlowQuarter = cashFlowQuarter;
+                    this.cashFlowScenario = cashFlowScenario;
                 } else {
                     ls.set('monthStartInd', this.monthStartInd, 'date');
                     ls.set('monthEndInd', this.monthEndInd, 'date');
                     ls.set('tabsValue', this.monthEndInd);
                     ls.set('costReturnAcc', this.costReturnAcc);
                     ls.set('cashFlowQuarter', this.cashFlowQuarter);
+                    ls.set('cashFlowScenario', this.cashFlowScenario);
                 }
                 this.setFloor(this.monthStartInd);
                 this.setCeiling(this.monthEndInd);
@@ -202,6 +212,10 @@
                 this.plotCashFlow();
                 ls.set('cashFlowQuarter', name);
             },
+            handleScenarioChange(name) {
+                this.plotCashFlow();
+                ls.set('cashFlowScenario', name);
+            },
             setFloor(start) {
                 this.monthEndIndOptions = {
                     disabledDate(date) {
@@ -220,7 +234,7 @@
                 if (!d || getQuarters(date(d), this.monthEndInd).length === 0) {
                     return
                 }
-                if (this.monthStartInd > date(this.cashFlowQuarter)){
+                if (this.monthStartInd > date(this.cashFlowQuarter)) {
                     this.cashFlowQuarter = this.quarters[0];
                     ls.set('cashFlowQuarter', this.quarters[0]);
                 }
@@ -237,7 +251,7 @@
                 if (!d || getQuarters(this.monthStartInd, date(d)).length === 0) {
                     return
                 }
-                if (this.monthEndInd < date(this.cashFlowQuarter)){
+                if (this.monthEndInd < date(this.cashFlowQuarter)) {
                     this.cashFlowQuarter = this.quarters[0];
                     ls.set('cashFlowQuarter', this.quarters[0]);
                 }
@@ -425,6 +439,7 @@
                 })
             },
             plotCashFlow() {
+                const sce = this.cashFlowScenario;
                 this.$api.result.getCashFlowTest(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
                     const data = response.data;
                     this.accounts.forEach((acc) => {
@@ -441,11 +456,11 @@
                         let net_cf = [];
                         let accumulated_cf = [];
                         this.cashFlowPeriods.forEach((p) => {
-                            business_cf.push(source[0]['cf_business_' + p + '_base']);
-                            assets_cf.push(source[0]['cf_assets_' + p + '_base']);
-                            financing_cf.push(source[0]['cf_financing_' + p + '_base']);
-                            net_cf.push(source[0]['cf_net_' + p + '_base']);
-                            accumulated_cf.push(source[0]['cf_accumulated_' + p + '_base']);
+                            business_cf.push(source[0]['cf_business_' + p + sce]);
+                            assets_cf.push(source[0]['cf_assets_' + p + sce]);
+                            financing_cf.push(source[0]['cf_financing_' + p + sce]);
+                            net_cf.push(source[0]['cf_net_' + p + sce]);
+                            accumulated_cf.push(source[0]['cf_accumulated_' + p + sce]);
                         });
                         opt.series.push(
                             {
