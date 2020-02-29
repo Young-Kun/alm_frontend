@@ -165,7 +165,7 @@
                         }
                     });
                     this.options.series.push({
-                        type: 'line', name: label, encode: {y: item}
+                        type: 'line', name: label, encode: {y: item}, symbol:'circle', symbolSize: 8
                     });
                 });
                 if (this.selected.length) {
