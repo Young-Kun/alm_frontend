@@ -168,7 +168,7 @@
                                     encode: {x: 'tot'},
                                     name: '期末资金运用净额',
                                     lineStyle: {opacity: 0.5},
-                                    label: {show: true, formatter: '{@tot}', textBorderColor:'#000'}
+                                    label: {show: true, formatter: '{@tot}'}
                                 },
                                 {type: 'bar', encode: {x: 'cash'}, name: '现金及流动性管理工具', stack: acc, barWidth: '36%'},
                                 {type: 'bar', encode: {x: 'fixed_income'}, name: '固定收益类投资资产', stack: acc},
@@ -201,7 +201,7 @@
                                 type: 'line',
                                 encode: {y: 'gap_l_scaled'},
                                 name: '规模调整后的修正久期缺口',
-                                label: {show: true, formatter: '{@gap_l_scaled}', textBorderColor:'#000'}
+                                label: {show: true, formatter: '{@gap_l_scaled}'}
                             },
                             {type: 'bar', encode: {y: 'in_scaled'}, name: '规模调整后的现金流入修正久期'},
                             {type: 'bar', encode: {y: 'l_out'}, name: '负债现金流出修正久期', barGap: 0, barCategoryGap: '50%'},
