@@ -88,7 +88,7 @@
     import {
         axisFormatPercent,
         date,
-        dateStr, formatBillion, formatPercent,
+        dateStr, formatBillionX, formatPercent,
         getArray,
         getObjOfAcc,
         getQuarters,
@@ -100,6 +100,7 @@
         name: "ResultIndicator",
         data() {
             return {
+                cashFlowPeriods: ['q1', 'q2', 'q3', 'q4', 'y2', 'y3'],
                 cashFlowQuarter: '201912',
                 costReturnAcc: 'T',
                 costReturnTypes: ['comp', 'fin', 'ra', 'avg'],
@@ -256,7 +257,7 @@
                                     encode: {x: 'tot'},
                                     name: '期末资金运用净额',
                                     lineStyle: {opacity: 0.5},
-                                    label: {show: true, offset: [-10, -10], formatter: formatBillion}
+                                    label: {show: true, offset: [-10, -10], formatter: formatBillionX}
                                 },
                                 {type: 'bar', encode: {x: 'cash'}, name: '现金及流动性管理工具', stack: acc, barWidth: '36%'},
                                 {type: 'bar', encode: {x: 'fixed_income'}, name: '固定收益类投资资产', stack: acc},
@@ -412,14 +413,39 @@
                     const data = response.data;
                     this.accounts.forEach((acc) => {
                         let opt = this.cash_flow_options[acc];
-                        opt.dataset = {source: getObjOfAcc(data, 'account', acc)};
-                        opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'}};
-                        opt.xAxis = {type: 'category'};
+                        const source = getObjOfAcc(getObjOfAcc(data, 'account', acc), 'data', this.cashFlowQuarter)
+                        opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'},};
+                        opt.xAxis = {type: 'category', data: this.cashFlowPeriods};
                         opt.yAxis = {};
-                        opt.legend = {bottom: 0};
+                        opt.legend = {bottom: 0, data: ['业务现金流', '资产现金流', '净现金流', '累计现金流']};
                         opt.series = [];
+                        let business_cf = [];
+                        let assets_cf = [];
+                        let financing_cf = [];
+                        let net_cf = [];
+                        let accumulated_cf = [];
+                        this.cashFlowPeriods.forEach((p) => {
+                            business_cf.push(source[0]['cf_business_' + p + '_base']);
+                            assets_cf.push(source[0]['cf_assets_' + p + '_base']);
+                            financing_cf.push(source[0]['cf_financing_' + p + '_base']);
+                            net_cf.push(source[0]['cf_net_' + p + '_base']);
+                            accumulated_cf.push(source[0]['cf_accumulated_' + p + '_base']);
+                        });
                         opt.series.push(
-                            {type: 'line', encode: {x: 'data', y: 'cf_business_q1_base'}, name: 'q1'},
+                            {
+                                type: 'line',
+                                data: accumulated_cf,
+                                name: '累计现金流',
+                                label: {
+                                    show: true, formatter: (params) => {
+                                        return (params.value / 1e8).toFixed(0);
+                                    }
+                                }
+                            },
+                            {type: 'bar', data: business_cf, name: '业务现金流', stack: '1'},
+                            {type: 'bar', data: assets_cf, name: '资产现金流', stack: '1'},
+                            {type: 'bar', data: financing_cf, name: '筹资现金流', stack: '1'},
+                            {type: 'line', data: net_cf, name: '净现金流'},
                         )
                     })
                 })
