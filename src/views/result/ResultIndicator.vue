@@ -44,7 +44,7 @@
                     </Row>
                 </TabPane>
                 <TabPane label="成本收益" name="cost">
-                    <div style="padding-left: 10px">
+                    <div style="margin: 20px">
                         <RadioGroup type="button" v-model="costReturnAcc">
                             <Radio label="T">公司整体</Radio>
                             <Radio label="C">传统账户</Radio>
@@ -71,7 +71,15 @@
 </template>
 
 <script>
-    import {date, dateStr, getArray, getObjOfAcc, getQuarters} from "@/custom/func";
+    import {
+        axisFormatPercent,
+        date,
+        dateStr, formatBillion,
+        getArray,
+        getObjOfAcc,
+        getQuarters,
+        tooltipFormatPercent
+    } from "@/custom/func";
     import ls from "@/custom/localStorage";
 
     export default {
@@ -215,13 +223,7 @@
                                     encode: {x: 'tot'},
                                     name: '期末资金运用净额',
                                     lineStyle: {opacity: 0.5},
-                                    label: {
-                                        show: true,
-                                        offset: [-10, -10],
-                                        formatter: (params) => {
-                                            return (params.value['tot']/100000000).toFixed(0)
-                                        }
-                                    }
+                                    label: {show: true, offset: [-10, -10], formatter: formatBillion}
                                 },
                                 {type: 'bar', encode: {x: 'cash'}, name: '现金及流动性管理工具', stack: acc, barWidth: '36%'},
                                 {type: 'bar', encode: {x: 'fixed_income'}, name: '固定收益类投资资产', stack: acc},
@@ -271,8 +273,12 @@
                         this.costReturnTypes.forEach((type) => {
                             let opt = this.cost_return_options[acc][type];
                             opt.dataset = {source: getObjOfAcc(cost_return, acc)};
-                            opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'}};
-                            opt.yAxis = {};
+                            opt.tooltip = {
+                                trigger: 'axis', axisPointer: {type: 'shadow'},
+                                formatter: tooltipFormatPercent
+                            };
+                            // opt.grid = {left: 35};
+                            opt.yAxis = {axisLabel: {formatter: axisFormatPercent}};
                             opt.xAxis = {type: 'category'};
                             opt.legend = {bottom: 0};
                             opt.series = [];
@@ -285,8 +291,8 @@
                                         barGap: 0,
                                         barCategoryGap: '50%'
                                     },
-                                    {type: 'bar', encode: {y: 'capital_cost'}, name: '资金成本率'},
-                                    {type: 'line', encode: {y: 'comp_gap'}, name: '差额'},
+                                    {type: 'bar', encode: {y: 'capital_cost'}, name: '资金成本率', stack: 'gap'},
+                                    {type: 'bar', encode: {y: 'comp_gap'}, name: '差额', stack: 'gap'},
                                 )
                             }
                             if (type === 'fin') {
@@ -298,8 +304,8 @@
                                         barGap: 0,
                                         barCategoryGap: '50%'
                                     },
-                                    {type: 'bar', encode: {y: 'eff_cost'}, name: '有效成本率'},
-                                    {type: 'line', encode: {y: 'fin_gap'}, name: '差额'},
+                                    {type: 'bar', encode: {y: 'eff_cost'}, name: '有效成本率', stack: 'gap'},
+                                    {type: 'bar', encode: {y: 'fin_gap'}, name: '差额', stack: 'gap'},
                                 )
                             }
                             if (type === 'ra') {
@@ -311,8 +317,8 @@
                                         barGap: 0,
                                         barCategoryGap: '50%'
                                     },
-                                    {type: 'bar', encode: {y: 'gre_cost'}, name: '保证成本率'},
-                                    {type: 'line', encode: {y: 'ra_comp_gap'}, name: '差额'},
+                                    {type: 'bar', encode: {y: 'gre_cost'}, name: '保证成本率', stack: 'gap'},
+                                    {type: 'bar', encode: {y: 'ra_comp_gap'}, name: '差额', stack: 'gap'},
                                 )
                             }
                             if (type === 'avg') {
@@ -324,8 +330,8 @@
                                         barGap: 0,
                                         barCategoryGap: '50%'
                                     },
-                                    {type: 'bar', encode: {y: 'avg_3y_cost'}, name: '三年平均资金成本率'},
-                                    {type: 'line', encode: {y: 'avg_3y_gap'}, name: '差额'},
+                                    {type: 'bar', encode: {y: 'avg_3y_cost'}, name: '三年平均资金成本率', stack: 'gap'},
+                                    {type: 'bar', encode: {y: 'avg_3y_gap'}, name: '差额', stack: 'gap'},
                                 )
                             }
                         })
@@ -360,6 +366,6 @@
 
     .chart-wrapper div {
         width: 100%;
-        height: 400px;
+        height: 300px;
     }
 </style>
