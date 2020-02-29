@@ -45,7 +45,7 @@
                 </TabPane>
                 <TabPane label="成本收益" name="cost">
                     <div style="margin: 20px">
-                        <RadioGroup type="button" v-model="costReturnAcc">
+                        <RadioGroup type="button" v-model="costReturnAcc" @on-change="handleCostReturnAccChange">
                             <Radio label="T">公司整体</Radio>
                             <Radio label="C">传统账户</Radio>
                             <Radio label="P">分红账户</Radio>
@@ -139,14 +139,17 @@
                 const monthStartInd = ls.get('monthStartInd', 'date');
                 const monthEndInd = ls.get('monthEndInd', 'date');
                 const tabsValue = ls.get('tabsValue');
-                if (monthStartInd && monthEndInd && tabsValue) {
+                const costReturnAcc = ls.get('costReturnAcc');
+                if (monthStartInd && monthEndInd && tabsValue && costReturnAcc) {
                     this.monthStartInd = monthStartInd;
                     this.monthEndInd = monthEndInd;
                     this.tabsValue = tabsValue;
+                    this.costReturnAcc = costReturnAcc;
                 } else {
                     ls.set('monthStartInd', this.monthStartInd, 'date');
                     ls.set('monthEndInd', this.monthEndInd, 'date');
                     ls.set('tabsValue', this.monthEndInd);
+                    ls.set('costReturnAcc', this.costReturnAcc);
                 }
                 this.setFloor(this.monthStartInd);
                 this.setCeiling(this.monthEndInd);
@@ -156,6 +159,9 @@
                 this.plotAl();
                 this.plotDur();
                 this.plotCostReturn();
+            },
+            handleCostReturnAccChange(name) {
+                ls.set('costReturnAcc', name);
             },
             handleTabChange(name) {
                 ls.set('tabsValue', name);
