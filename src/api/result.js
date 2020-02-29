@@ -23,6 +23,10 @@ const result = {
     getCostReturn(monthStart, monthEnd) {
         return window.axios.get('/result/cost-return/', {params: {monthStart, monthEnd}});
     },
+    // 获取现金流压力测试结果
+    getCashFlowTest(monthStart, monthEnd) {
+        return window.axios.get('/result/cash-flow-test/', {params: {monthStart, monthEnd}});
+    }
 };
 
 export default result

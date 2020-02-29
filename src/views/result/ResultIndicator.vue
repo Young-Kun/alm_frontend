@@ -23,7 +23,7 @@
             <Tabs :value="tabsValue" type="card" @on-click="handleTabChange">
                 <TabPane label="资产负债规模" name="assets">
                     <Row type="flex">
-                        <i-col :xs="24" :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx" :border="false">
+                        <i-col :xs="24" :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
                             <Card class="chart-wrapper">
                                 <div>
                                     <v-chart :options="asset_options[acc]" ref="chart" theme="default"></v-chart>
@@ -63,8 +63,22 @@
                         </i-col>
                     </Row>
                 </TabPane>
-                <TabPane label="成本收益压力测试" name="cost_test">标签三的内容</TabPane>
-                <TabPane label="现金流" name="cf">标签三的内容</TabPane>
+                <TabPane label="现金流" name="cf">
+                    <div style="margin: 20px">
+                        <RadioGroup type="button" v-model="cashFlowQuarter">
+                            <Radio :label="q" v-for="(q, idx) in quarters" :key="idx">{{ q }}</Radio>
+                        </RadioGroup>
+                    </div>
+                    <Row type="flex">
+                        <i-col :xs="24" :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
+                            <Card class="chart-wrapper">
+                                <div>
+                                    <v-chart :options="cash_flow_options[acc]" ref="chart" theme="default"></v-chart>
+                                </div>
+                            </Card>
+                        </i-col>
+                    </Row>
+                </TabPane>
             </Tabs>
         </Card>
     </div>
@@ -86,6 +100,7 @@
         name: "ResultIndicator",
         data() {
             return {
+                cashFlowQuarter: '201912',
                 costReturnAcc: 'T',
                 costReturnTypes: ['comp', 'fin', 'ra', 'avg'],
                 monthStartIndOptions: null,
@@ -131,7 +146,18 @@
                         ra: {title: {text: '风险调整口径'}, series: []},
                         avg: {title: {text: '三年平均口径'}, series: []},
                     }
+                },
+                cash_flow_options: {
+                    T: {title: {text: '公司整体'}, series: []},
+                    C: {title: {text: '传统账户'}, series: []},
+                    P: {title: {text: '分红账户'}, series: []},
+                    U: {title: {text: '万能账户'}, series: []}
                 }
+            }
+        },
+        computed: {
+            quarters() {
+                return getQuarters(this.monthStartInd, this.monthEndInd).reverse();
             }
         },
         methods: {
@@ -159,6 +185,7 @@
                 this.plotAl();
                 this.plotDur();
                 this.plotCostReturn();
+                this.plotCashFlow();
             },
             handleCostReturnAccChange(name) {
                 ls.set('costReturnAcc', name);
@@ -377,6 +404,23 @@
                                 )
                             }
                         })
+                    })
+                })
+            },
+            plotCashFlow() {
+                this.$api.result.getCashFlowTest(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
+                    const data = response.data;
+                    this.accounts.forEach((acc) => {
+                        let opt = this.cash_flow_options[acc];
+                        opt.dataset = {source: getObjOfAcc(data, acc)};
+                        opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'}};
+                        opt.xAxis = {type: 'category'};
+                        opt.yAxis = {};
+                        opt.legend = {bottom: 0};
+                        opt.series = [];
+                        opt.series.push(
+                            {type: 'line', encode: {x: 'data', y: 'cf_business_q1_base'}, name: 'q1'},
+                        )
                     })
                 })
             },
