@@ -86,6 +86,7 @@
 
 <script>
     import {
+        axisFormatBillion,
         axisFormatPercent,
         date,
         dateStr, formatBillionX, formatPercent,
@@ -219,6 +220,10 @@
                 if (!d || getQuarters(date(d), this.monthEndInd).length === 0) {
                     return
                 }
+                if (this.monthStartInd > date(this.cashFlowQuarter)){
+                    this.cashFlowQuarter = this.quarters[0];
+                    ls.set('cashFlowQuarter', this.quarters[0]);
+                }
                 const end = date(d);
                 this.monthEndIndOptions = {
                     disabledDate(date) {
@@ -231,6 +236,10 @@
             handleMonthEndIndChange(d) {
                 if (!d || getQuarters(this.monthStartInd, date(d)).length === 0) {
                     return
+                }
+                if (this.monthEndInd < date(this.cashFlowQuarter)){
+                    this.cashFlowQuarter = this.quarters[0];
+                    ls.set('cashFlowQuarter', this.quarters[0]);
                 }
                 const start = date(d);
                 this.monthStartIndOptions = {
@@ -423,7 +432,7 @@
                         const source = getObjOfAcc(getObjOfAcc(data, 'account', acc), 'data', this.cashFlowQuarter)
                         opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'},};
                         opt.xAxis = {type: 'category', data: this.cashFlowPeriods};
-                        opt.yAxis = {};
+                        opt.yAxis = {axisLabel: {formatter: axisFormatBillion}};
                         opt.legend = {bottom: 0, data: ['业务现金流', '资产现金流', '净现金流', '累计现金流']};
                         opt.series = [];
                         let business_cf = [];

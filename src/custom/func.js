@@ -81,3 +81,8 @@ export const tooltipFormatPercent = (params) => {
 export const axisFormatPercent = (value) => {
     return (value * 100).toFixed(0) + '%'
 };
+
+// axis label格式化为亿
+export const axisFormatBillion = (value) => {
+    return (value / 1e8).toFixed(0)
+};
