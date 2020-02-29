@@ -20,7 +20,7 @@
             </DatePicker>
         </Card>
         <Card>
-            <Tabs value="assets" type="card">
+            <Tabs :value="tabsValue" type="card" @on-click="handleTabChange">
                 <TabPane label="资产负债规模" name="assets">
                     <Row type="flex">
                         <i-col :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
@@ -30,7 +30,15 @@
                         </i-col>
                     </Row>
                 </TabPane>
-                <TabPane label="期限结构" name="dur">标签一的内容</TabPane>
+                <TabPane label="期限结构" name="dur">
+                    <Row type="flex">
+                        <i-col :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
+                            <div class="chart-wrapper">
+                                <v-chart :options="dur_options[acc]" ref="chart" theme="default"></v-chart>
+                            </div>
+                        </i-col>
+                    </Row>
+                </TabPane>
                 <TabPane label="成本收益" name="cost">标签二的内容</TabPane>
                 <TabPane label="成本收益压力测试" name="cost_test">标签三的内容</TabPane>
                 <TabPane label="现金流" name="cf">标签三的内容</TabPane>
@@ -49,6 +57,7 @@
             return {
                 monthStartIndOptions: null,
                 monthEndIndOptions: null,
+                tabsValue: 'assets',
                 monthStartInd: date('201901'),
                 monthEndInd: new Date(),
                 accounts: ['T', 'C', 'P', 'U'],
@@ -57,19 +66,28 @@
                     C: {title: {text: '传统账户'}, series: []},
                     P: {title: {text: '分红账户'}, series: []},
                     U: {title: {text: '万能账户'}, series: []}
-                }
+                },
+                dur_options: {
+                    T: {title: {text: '公司整体'}, series: []},
+                    C: {title: {text: '传统账户'}, series: []},
+                    P: {title: {text: '分红账户'}, series: []},
+                    U: {title: {text: '万能账户'}, series: []}
+                },
             }
         },
         methods: {
             plotChartInd() {
                 const monthStartInd = ls.get('monthStartInd', 'date');
                 const monthEndInd = ls.get('monthEndInd', 'date');
-                if (monthStartInd && monthEndInd) {
+                const tabsValue = ls.get('tabsValue');
+                if (monthStartInd && monthEndInd && tabsValue) {
                     this.monthStartInd = monthStartInd;
                     this.monthEndInd = monthEndInd;
+                    this.tabsValue = tabsValue;
                 } else {
                     ls.set('monthStartInd', this.monthStartInd, 'date');
                     ls.set('monthEndInd', this.monthEndInd, 'date');
+                    ls.set('tabsValue', this.monthEndInd);
                 }
                 this.setFloor(this.monthStartInd);
                 this.setCeiling(this.monthEndInd);
@@ -77,6 +95,10 @@
             },
             plot() {
                 this.plotAl();
+                this.plotDur();
+            },
+            handleTabChange(name) {
+                ls.set('tabsValue', name);
             },
             setFloor(start) {
                 this.monthEndIndOptions = {
@@ -149,6 +171,29 @@
                     console.log(error.response);
                 });
             },
+            plotDur() {
+                this.$api.result.getDur(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
+                    const dur = response.data;
+                    this.accounts.forEach((acc) => {
+                        let opt = this.dur_options[acc];
+                        opt.dataset = {source: getObjOfAcc(dur, acc)};
+                        opt.grid = {left: '60'};
+                        opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'}};
+                        opt.yAxis = {};
+                        opt.xAxis = {type: 'category'};
+                        opt.series = [];
+                        opt.series.push(
+                            {type: 'bar', encode: {y: 'in_scaled'}, name: '规模调整后的现金流入修正久期'},
+                            {type: 'bar', encode: {y: 'l_out'}, name: '负债现金流出修正久期'},
+                            {type: 'line', encode: {y: 'l_out'}, name: '负债现金流出修正久期'},
+                            {type: 'line', encode: {y: 'gap_l_scaled'}, name: '规模调整后的修正久期缺口'},
+                            {type: 'line', encode: {y: 'gap_a_scaled'}, name: '资产调整后的期限缺口'},
+                        )
+                    })
+                }).catch(error => {
+                    console.log(error.response);
+                });
+            },
             resizeChart() {
                 const charts = this.$refs.chart;
                 if (charts.length) {
@@ -161,7 +206,8 @@
         beforeMount() {
             this.plotChartInd();
             window.addEventListener('resize', this.resizeChart);
-        },
+        }
+        ,
         beforeDestroy() {
             window.removeEventListener('resize', this.resizeChart)
         }

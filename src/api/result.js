@@ -14,6 +14,10 @@ const result = {
     // 获取会计准备金
     getReserve(monthStart, monthEnd) {
         return window.axios.get('/result/reserve/', {params: {monthStart, monthEnd}});
+    },
+    // 获取修正久期
+    getDur(monthStart, monthEnd) {
+        return window.axios.get('/result/modified-duration/', {params: {monthStart, monthEnd}});
     }
 };
 
