@@ -181,6 +181,8 @@
                         opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'}};
                         opt.yAxis = {};
                         opt.xAxis = {type: 'category'};
+                        opt.grid = {bottom: 90};
+                        opt.legend = {bottom: 0};
                         opt.series = [];
                         opt.series.push(
                             {type: 'bar', encode: {y: 'in_scaled'}, name: '规模调整后的现金流入修正久期'},
