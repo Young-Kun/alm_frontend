@@ -18,7 +18,11 @@ const result = {
     // 获取修正久期
     getDur(monthStart, monthEnd) {
         return window.axios.get('/result/modified-duration/', {params: {monthStart, monthEnd}});
-    }
+    },
+    // 获取成本收益
+    getCostReturn(monthStart, monthEnd) {
+        return window.axios.get('/result/cost-return/', {params: {monthStart, monthEnd}});
+    },
 };
 
 export default result

@@ -43,7 +43,26 @@
                         </i-col>
                     </Row>
                 </TabPane>
-                <TabPane label="成本收益" name="cost">标签二的内容</TabPane>
+                <TabPane label="成本收益" name="cost">
+                    <div style="padding-left: 10px">
+                        <RadioGroup type="button" v-model="costReturnAcc">
+                            <Radio label="T">公司整体</Radio>
+                            <Radio label="C">传统账户</Radio>
+                            <Radio label="P">分红账户</Radio>
+                            <Radio label="U">万能账户</Radio>
+                        </RadioGroup>
+                    </div>
+                    <Row type="flex">
+                        <i-col :xs="24" :md="24" :lg="12" v-for="(type, idx) in costReturnTypes" :key="idx">
+                            <Card class="chart-wrapper">
+                                <div>
+                                    <v-chart :options="cost_return_options[costReturnAcc][type]" ref="chart"
+                                             theme="default"></v-chart>
+                                </div>
+                            </Card>
+                        </i-col>
+                    </Row>
+                </TabPane>
                 <TabPane label="成本收益压力测试" name="cost_test">标签三的内容</TabPane>
                 <TabPane label="现金流" name="cf">标签三的内容</TabPane>
             </Tabs>
@@ -59,6 +78,8 @@
         name: "ResultIndicator",
         data() {
             return {
+                costReturnAcc: 'T',
+                costReturnTypes: ['comp', 'fin', 'ra', 'avg'],
                 monthStartIndOptions: null,
                 monthEndIndOptions: null,
                 tabsValue: 'assets',
@@ -77,6 +98,32 @@
                     P: {title: {text: '分红账户'}, series: []},
                     U: {title: {text: '万能账户'}, series: []}
                 },
+                cost_return_options: {
+                    T: {
+                        comp: {title: {text: '综合口径'}, series: []},
+                        fin: {title: {text: '会计口径'}, series: []},
+                        ra: {title: {text: '风险调整口径'}, series: []},
+                        avg: {title: {text: '三年平均口径'}, series: []},
+                    },
+                    C: {
+                        comp: {title: {text: '综合口径'}, series: []},
+                        fin: {title: {text: '会计口径'}, series: []},
+                        ra: {title: {text: '风险调整口径'}, series: []},
+                        avg: {title: {text: '三年平均口径'}, series: []},
+                    },
+                    P: {
+                        comp: {title: {text: '综合口径'}, series: []},
+                        fin: {title: {text: '会计口径'}, series: []},
+                        ra: {title: {text: '风险调整口径'}, series: []},
+                        avg: {title: {text: '三年平均口径'}, series: []},
+                    },
+                    U: {
+                        comp: {title: {text: '综合口径'}, series: []},
+                        fin: {title: {text: '会计口径'}, series: []},
+                        ra: {title: {text: '风险调整口径'}, series: []},
+                        avg: {title: {text: '三年平均口径'}, series: []},
+                    }
+                }
             }
         },
         methods: {
@@ -100,6 +147,7 @@
             plot() {
                 this.plotAl();
                 this.plotDur();
+                this.plotCostReturn();
             },
             handleTabChange(name) {
                 ls.set('tabsValue', name);
@@ -150,7 +198,6 @@
                     reserve = response.data;
                     this.$api.result.getAssets(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
                         const data = response.data;
-                        console.log(data);
                         this.accounts.forEach((acc) => {
                             const reserve_acc = getArray(getObjOfAcc(reserve, acc), 'reserve');
                             let opt = this.asset_options[acc];
@@ -210,6 +257,74 @@
                 }).catch(error => {
                     console.log(error.response);
                 });
+            },
+            plotCostReturn() {
+                this.$api.result.getCostReturn(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
+                    const cost_return = response.data;
+                    this.accounts.forEach((acc) => {
+                        this.costReturnTypes.forEach((type) => {
+                            let opt = this.cost_return_options[acc][type];
+                            opt.dataset = {source: getObjOfAcc(cost_return, acc)};
+                            opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'}};
+                            opt.yAxis = {};
+                            opt.xAxis = {type: 'category'};
+                            opt.legend = {bottom: 0};
+                            opt.series = [];
+                            if (type === 'comp') {
+                                opt.series.push(
+                                    {
+                                        type: 'bar',
+                                        encode: {y: 'comp_return'},
+                                        name: '年化综合投资收益率',
+                                        barGap: 0,
+                                        barCategoryGap: '50%'
+                                    },
+                                    {type: 'bar', encode: {y: 'capital_cost'}, name: '资金成本率'},
+                                    {type: 'line', encode: {y: 'comp_gap'}, name: '差额'},
+                                )
+                            }
+                            if (type === 'fin') {
+                                opt.series.push(
+                                    {
+                                        type: 'bar',
+                                        encode: {y: 'fin_return'},
+                                        name: '年化会计投资收益率',
+                                        barGap: 0,
+                                        barCategoryGap: '50%'
+                                    },
+                                    {type: 'bar', encode: {y: 'eff_cost'}, name: '有效成本率'},
+                                    {type: 'line', encode: {y: 'fin_gap'}, name: '差额'},
+                                )
+                            }
+                            if (type === 'ra') {
+                                opt.series.push(
+                                    {
+                                        type: 'bar',
+                                        encode: {y: 'ra_comp_return'},
+                                        name: '风险调整后综合投资收益率',
+                                        barGap: 0,
+                                        barCategoryGap: '50%'
+                                    },
+                                    {type: 'bar', encode: {y: 'gre_cost'}, name: '保证成本率'},
+                                    {type: 'line', encode: {y: 'ra_comp_gap'}, name: '差额'},
+                                )
+                            }
+                            if (type === 'avg') {
+                                opt.series.push(
+                                    {
+                                        type: 'bar',
+                                        encode: {y: 'avg_3y_return'},
+                                        name: '三年平均年化综合投资收益率',
+                                        barGap: 0,
+                                        barCategoryGap: '50%'
+                                    },
+                                    {type: 'bar', encode: {y: 'avg_3y_cost'}, name: '三年平均资金成本率'},
+                                    {type: 'line', encode: {y: 'avg_3y_gap'}, name: '差额'},
+                                )
+                            }
+                        })
+                    })
+                })
             },
             resizeChart() {
                 const charts = this.$refs.chart;
