@@ -186,14 +186,7 @@
                         opt.series = [];
                         opt.series.push(
                             {type: 'bar', encode: {y: 'in_scaled'}, name: '规模调整后的现金流入修正久期'},
-                            {
-                                type: 'bar',
-                                encode: {y: 'l_out'},
-                                name: '负债现金流出修正久期',
-                                barGap: '-50%',
-                                barCategoryGap: '50%',
-                                itemStyle: {opacity: 0.7}
-                            },
+                            {type: 'bar', encode: {y: 'l_out'}, name: '负债现金流出修正久期', barGap: 0, barCategoryGap: '50%'},
                             {type: 'line', encode: {y: 'gap_l_scaled'}, name: '规模调整后的修正久期缺口'},
                             {type: 'line', encode: {y: 'gap_a_scaled'}, name: '资产调整后的期限缺口'},
                         )
