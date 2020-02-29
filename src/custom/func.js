@@ -42,10 +42,10 @@ export const getQuarters = (startDate, endDate) => {
     return q_list;
 };
 
-// 获取某账户的数据
-export const getObjOfAcc = (arr, acc) => {
+// 筛选数据
+export const getObjOfAcc = (arr, key_name, key_value) => {
     return arr.filter((item) => {
-        return item.account === acc;
+        return item[key_name] === key_value;
     })
 };
 

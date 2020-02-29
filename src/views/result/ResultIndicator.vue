@@ -240,9 +240,9 @@
                     this.$api.result.getAssets(dateStr(this.monthStartInd), dateStr(this.monthEndInd)).then((response) => {
                         const data = response.data;
                         this.accounts.forEach((acc) => {
-                            const reserve_acc = getArray(getObjOfAcc(reserve, acc), 'reserve');
+                            const reserve_acc = getArray(getObjOfAcc(reserve, 'account', acc), 'reserve');
                             let opt = this.asset_options[acc];
-                            opt.dataset = {source: getObjOfAcc(data, acc)};
+                            opt.dataset = {source: getObjOfAcc(data, 'account', acc)};
                             opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'}};
                             opt.grid = {left: 60};
                             opt.yAxis = {type: 'category'};
@@ -276,7 +276,7 @@
                     const dur = response.data;
                     this.accounts.forEach((acc) => {
                         let opt = this.dur_options[acc];
-                        opt.dataset = {source: getObjOfAcc(dur, acc)};
+                        opt.dataset = {source: getObjOfAcc(dur, 'account', acc)};
                         opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'}};
                         opt.yAxis = {};
                         opt.xAxis = {type: 'category'};
@@ -305,7 +305,7 @@
                     this.accounts.forEach((acc) => {
                         this.costReturnTypes.forEach((type) => {
                             let opt = this.cost_return_options[acc][type];
-                            opt.dataset = {source: getObjOfAcc(cost_return, acc)};
+                            opt.dataset = {source: getObjOfAcc(cost_return, 'account', acc)};
                             opt.tooltip = {
                                 trigger: 'axis', axisPointer: {type: 'shadow'},
                                 formatter: tooltipFormatPercent
@@ -412,7 +412,7 @@
                     const data = response.data;
                     this.accounts.forEach((acc) => {
                         let opt = this.cash_flow_options[acc];
-                        opt.dataset = {source: getObjOfAcc(data, acc)};
+                        opt.dataset = {source: getObjOfAcc(data, 'account', acc)};
                         opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'}};
                         opt.xAxis = {type: 'category'};
                         opt.yAxis = {};
