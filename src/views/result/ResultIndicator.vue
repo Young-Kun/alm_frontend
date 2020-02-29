@@ -53,42 +53,10 @@
                 monthEndInd: new Date(),
                 accounts: ['T', 'C', 'P', 'U'],
                 asset_options: {
-                    T: {
-                        grid: {left: '60'},
-                        title: {text: '公司整体'},
-                        tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
-                        dataset: {source: []},
-                        yAxis: {type: 'category'},
-                        xAxis: {show: false},
-                        series: []
-                    },
-                    C: {
-                        grid: {left: '60'},
-                        title: {text: '传统账户'},
-                        tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
-                        dataset: {source: []},
-                        yAxis: {type: 'category'},
-                        xAxis: {show: false},
-                        series: []
-                    },
-                    P: {
-                        grid: {left: '60'},
-                        title: {text: '分红账户'},
-                        tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
-                        dataset: {source: []},
-                        yAxis: {type: 'category'},
-                        xAxis: {show: false},
-                        series: []
-                    },
-                    U: {
-                        grid: {left: '60'},
-                        title: {text: '万能账户'},
-                        tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
-                        dataset: {source: []},
-                        yAxis: {type: 'category'},
-                        xAxis: {show: false},
-                        series: []
-                    }
+                    T: {title: {text: '公司整体'}, series: []},
+                    C: {title: {text: '传统账户'}, series: []},
+                    P: {title: {text: '分红账户'}, series: []},
+                    U: {title: {text: '万能账户'}, series: []}
                 }
             }
         },
@@ -159,7 +127,11 @@
                         this.accounts.forEach((acc) => {
                             const reserve_acc = getArray(getObjOfAcc(reserve, acc), 'reserve');
                             let opt = this.asset_options[acc];
-                            opt.dataset.source = getObjOfAcc(data, acc);
+                            opt.dataset = {source: getObjOfAcc(data, acc)};
+                            opt.grid = {left: '60'};
+                            opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'}};
+                            opt.yAxis = {type: 'category'};
+                            opt.xAxis = {show: false};
                             opt.series = [];
                             opt.series.push(
                                 {type: 'line', data: reserve_acc, name: '会计准备金', lineStyle: {type: 'dashed'}},
