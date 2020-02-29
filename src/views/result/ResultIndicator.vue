@@ -65,7 +65,7 @@
                 </TabPane>
                 <TabPane label="现金流" name="cf">
                     <div style="margin: 20px">
-                        <RadioGroup type="button" v-model="cashFlowQuarter">
+                        <RadioGroup type="button" v-model="cashFlowQuarter" @on-change="handleCashFlowQuarterChange">
                             <Radio :label="q" v-for="(q, idx) in quarters" :key="idx">{{ q }}</Radio>
                         </RadioGroup>
                     </div>
@@ -167,16 +167,19 @@
                 const monthEndInd = ls.get('monthEndInd', 'date');
                 const tabsValue = ls.get('tabsValue');
                 const costReturnAcc = ls.get('costReturnAcc');
-                if (monthStartInd && monthEndInd && tabsValue && costReturnAcc) {
+                const cashFlowQuarter = ls.get('cashFlowQuarter');
+                if (monthStartInd && monthEndInd && tabsValue && costReturnAcc && cashFlowQuarter) {
                     this.monthStartInd = monthStartInd;
                     this.monthEndInd = monthEndInd;
                     this.tabsValue = tabsValue;
                     this.costReturnAcc = costReturnAcc;
+                    this.cashFlowQuarter = cashFlowQuarter;
                 } else {
                     ls.set('monthStartInd', this.monthStartInd, 'date');
                     ls.set('monthEndInd', this.monthEndInd, 'date');
                     ls.set('tabsValue', this.monthEndInd);
                     ls.set('costReturnAcc', this.costReturnAcc);
+                    ls.set('cashFlowQuarter', this.cashFlowQuarter);
                 }
                 this.setFloor(this.monthStartInd);
                 this.setCeiling(this.monthEndInd);
@@ -193,6 +196,10 @@
             },
             handleTabChange(name) {
                 ls.set('tabsValue', name);
+            },
+            handleCashFlowQuarterChange(name) {
+                this.plotCashFlow();
+                ls.set('cashFlowQuarter', name);
             },
             setFloor(start) {
                 this.monthEndIndOptions = {
