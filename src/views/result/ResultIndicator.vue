@@ -74,7 +74,7 @@
     import {
         axisFormatPercent,
         date,
-        dateStr, formatBillion,
+        dateStr, formatBillion, formatPercent,
         getArray,
         getObjOfAcc,
         getQuarters,
@@ -292,52 +292,88 @@
                                 opt.series.push(
                                     {
                                         type: 'bar',
-                                        encode: {y: 'comp_return'},
-                                        name: '年化综合投资收益率',
-                                        barGap: 0,
-                                        barCategoryGap: '50%'
+                                        encode: {y: 'comp_gap'},
+                                        name: '利差',
+                                        barCategoryGap: '50%',
                                     },
-                                    {type: 'bar', encode: {y: 'capital_cost'}, name: '资金成本率', stack: 'gap'},
-                                    {type: 'bar', encode: {y: 'comp_gap'}, name: '差额', stack: 'gap'},
+                                    {
+                                        type: 'line',
+                                        encode: {y: 'comp_return'},
+                                        name: '年化综合收益率',
+                                        label: {show: true, formatter: formatPercent, position: 'top'}
+                                    },
+                                    {
+                                        type: 'line',
+                                        encode: {y: 'capital_cost'},
+                                        name: '资金成本率',
+                                        label: {show: true, formatter: formatPercent, position: 'bottom'}
+                                    },
                                 )
                             }
                             if (type === 'fin') {
                                 opt.series.push(
                                     {
                                         type: 'bar',
-                                        encode: {y: 'fin_return'},
-                                        name: '年化会计投资收益率',
-                                        barGap: 0,
-                                        barCategoryGap: '50%'
+                                        encode: {y: 'fin_gap'},
+                                        name: '利差',
+                                        barCategoryGap: '50%',
                                     },
-                                    {type: 'bar', encode: {y: 'eff_cost'}, name: '有效成本率', stack: 'gap'},
-                                    {type: 'bar', encode: {y: 'fin_gap'}, name: '差额', stack: 'gap'},
+                                    {
+                                        type: 'line',
+                                        encode: {y: 'fin_return'},
+                                        name: '年化会计收益率',
+                                        label: {show: true, formatter: formatPercent, position: 'top'}
+                                    },
+                                    {
+                                        type: 'line',
+                                        encode: {y: 'eff_cost'},
+                                        name: '有效成本率',
+                                        label: {show: true, formatter: formatPercent, position: 'bottom'}
+                                    },
                                 )
                             }
                             if (type === 'ra') {
                                 opt.series.push(
                                     {
                                         type: 'bar',
-                                        encode: {y: 'ra_comp_return'},
-                                        name: '风险调整后综合投资收益率',
-                                        barGap: 0,
-                                        barCategoryGap: '50%'
+                                        encode: {y: 'ra_comp_gap'},
+                                        name: '利差',
+                                        barCategoryGap: '50%',
                                     },
-                                    {type: 'bar', encode: {y: 'gre_cost'}, name: '保证成本率', stack: 'gap'},
-                                    {type: 'bar', encode: {y: 'ra_comp_gap'}, name: '差额', stack: 'gap'},
+                                    {
+                                        type: 'line',
+                                        encode: {y: 'ra_comp_return'},
+                                        name: '风险调整后综合收益率',
+                                        label: {show: true, formatter: formatPercent, position: 'top'}
+                                    },
+                                    {
+                                        type: 'line',
+                                        encode: {y: 'gre_cost'},
+                                        name: '保证成本率',
+                                        label: {show: true, formatter: formatPercent, position: 'bottom'}
+                                    },
                                 )
                             }
                             if (type === 'avg') {
                                 opt.series.push(
                                     {
                                         type: 'bar',
-                                        encode: {y: 'avg_3y_return'},
-                                        name: '三年平均年化综合投资收益率',
-                                        barGap: 0,
-                                        barCategoryGap: '50%'
+                                        encode: {y: 'avg_3y_gap'},
+                                        name: '利差',
+                                        barCategoryGap: '50%',
                                     },
-                                    {type: 'bar', encode: {y: 'avg_3y_cost'}, name: '三年平均资金成本率', stack: 'gap'},
-                                    {type: 'bar', encode: {y: 'avg_3y_gap'}, name: '差额', stack: 'gap'},
+                                    {
+                                        type: 'line',
+                                        encode: {y: 'avg_3y_return'},
+                                        name: '三年平均综合收益率',
+                                        label: {show: true, formatter: formatPercent, position: 'top'}
+                                    },
+                                    {
+                                        type: 'line',
+                                        encode: {y: 'avg_3y_cost'},
+                                        name: '三年平均资金成本率',
+                                        label: {show: true, formatter: formatPercent, position: 'bottom'}
+                                    },
                                 )
                             }
                         })

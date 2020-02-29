@@ -58,16 +58,21 @@ export const getArray = (arr, key) => {
     return result
 };
 
-// label数据标签格式化为亿元
+// label数据标签格式化为亿元：数据在x轴上
 export const formatBillion = (params) => {
-    return (params.value['tot'] / 100000000).toFixed(0)
+    return (params.value[params.dimensionNames[params.encode.x[0]]] / 100000000).toFixed(0);
+};
+
+// label数据标签格式化为百分数
+export const formatPercent = (params) => {
+    return (params.value[params.dimensionNames[params.encode.y[0]]] * 100).toFixed(2) + '%';
 };
 
 // tooltip格式化为百分数
 export const tooltipFormatPercent = (params) => {
     let str = '<div><p>' + params[0].name + '</p></div>';
     params.forEach(p => {
-        str += p.marker + p.seriesName + ': ' + (p.data[p.dimensionNames[p.encode.y[0]]] * 100).toFixed(2) + '%<br/>'
+        str += p.marker + p.seriesName + ': ' + (p.value[p.dimensionNames[p.encode.y[0]]] * 100).toFixed(2) + '%<br/>'
     });
     return str
 };
