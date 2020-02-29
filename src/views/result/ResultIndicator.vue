@@ -215,7 +215,13 @@
                                     encode: {x: 'tot'},
                                     name: '期末资金运用净额',
                                     lineStyle: {opacity: 0.5},
-                                    label: {show: true, formatter: '{@tot}'}
+                                    label: {
+                                        show: true,
+                                        offset: [-10, -10],
+                                        formatter: (params) => {
+                                            return (params.value['tot']/100000000).toFixed(0)
+                                        }
+                                    }
                                 },
                                 {type: 'bar', encode: {x: 'cash'}, name: '现金及流动性管理工具', stack: acc, barWidth: '36%'},
                                 {type: 'bar', encode: {x: 'fixed_income'}, name: '固定收益类投资资产', stack: acc},
