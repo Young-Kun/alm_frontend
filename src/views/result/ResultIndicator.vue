@@ -311,7 +311,7 @@
                         opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'}};
                         opt.yAxis = {};
                         opt.xAxis = {type: 'category'};
-                        opt.grid = {bottom: 100};
+                        opt.grid = {bottom: 120};
                         opt.legend = {bottom: 0};
                         opt.series = [];
                         opt.series.push(
@@ -341,7 +341,7 @@
                                 trigger: 'axis', axisPointer: {type: 'shadow'},
                                 formatter: tooltipFormatPercent
                             };
-                            // opt.grid = {left: 35};
+                            opt.grid = {bottom: 80};
                             opt.yAxis = {axisLabel: {formatter: axisFormatPercent}};
                             opt.xAxis = {type: 'category'};
                             opt.legend = {bottom: 0};
@@ -448,6 +448,7 @@
                         opt.tooltip = {trigger: 'axis', axisPointer: {type: 'shadow'},};
                         opt.xAxis = {type: 'category', data: this.cashFlowPeriods};
                         opt.yAxis = {axisLabel: {formatter: axisFormatBillion}};
+                        opt.grid = {bottom: 80};
                         opt.legend = {bottom: 0, data: ['业务现金流', '资产现金流', '净现金流', '累计现金流']};
                         opt.series = [];
                         let business_cf = [];
@@ -509,6 +510,6 @@
 
     .chart-wrapper div {
         width: 100%;
-        height: 300px;
+        height: 350px;
     }
 </style>
