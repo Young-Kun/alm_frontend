@@ -98,7 +98,7 @@
         dateStr, formatBillionX, formatPercent,
         getArray,
         getObjOfAcc,
-        getQuarters,
+        getQuarters, resizeChart,
         tooltipFormatPercent
     } from "@/custom/func";
     import ls from "@/custom/localStorage";
@@ -481,23 +481,15 @@
                         )
                     })
                 })
-            },
-            resizeChart() {
-                const charts = this.$refs.chart;
-                if (charts.length) {
-                    charts.forEach((chart) => {
-                        chart.resize();
-                    });
-                }
             }
         },
         beforeMount() {
             this.plotChartInd();
-            document.getElementsByClassName('chart-wrapper').onrsize = this.resizeChart;
+            window.addEventListener('resize', resizeChart);
         }
         ,
         beforeDestroy() {
-            document.getElementsByClassName('chart-wrapper').off('resize', this.resizeChart)
+            window.removeEventListener('resize', resizeChart);
         }
     }
 </script>
