@@ -56,8 +56,17 @@
         line-height: 64px;
         color: #fff;
         text-align: center;
-        font-size: x-large;
         border-bottom: 1px solid #101117;
         cursor: pointer;
+    }
+
+    .expanded #brand {
+        font-size: x-large;
+        transition: all .2s ease-in-out;
+    }
+
+    .collapsed #brand {
+        font-size: large;
+        transition: all .2s ease-in-out;
     }
 </style>
