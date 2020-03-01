@@ -4,10 +4,10 @@
             ALM
         </div>
         <Menu ref="siderMenu" theme="dark" accordion width="auto" id="sider-menu" :active-name="active"
-              :open-names="open" v-if="siderStatus === 'expanded'">
+              :open-names="open" v-show="siderStatus === 'expanded'">
             <data-based-menu-items :menu-list-data=siderMenuList></data-based-menu-items>
         </Menu>
-        <div v-if="siderStatus === 'collapsed'">
+        <div v-show="siderStatus === 'collapsed'">
             <data-based-tooltips :menu-list-data="siderMenuList"></data-based-tooltips>
         </div>
     </div>
@@ -47,12 +47,10 @@
             const open = active.split('-')[0];
             this.active = active;
             this.open = [open];
-            if (this.siderStatus === 'expanded') {
-                this.$nextTick(() => {
-                    this.$refs.siderMenu.updateOpened();
-                    this.$refs.siderMenu.updateActiveName();
-                })
-            }
+            this.$nextTick(() => {
+                this.$refs.siderMenu.updateOpened();
+                this.$refs.siderMenu.updateActiveName();
+            })
         }
     }
 </script>

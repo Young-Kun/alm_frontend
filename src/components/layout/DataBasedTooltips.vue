@@ -37,15 +37,20 @@
         width: 100%;
         color: rgba(255, 255, 255, 0.7);
         padding: 14px 0;
-        text-align: center;
         cursor: pointer;
+    }
+
+    .item i {
+        margin-left: 24px;
+        font-size: large;
+        transform: translateX(-5px);
     }
 
     .item:hover {
         background: #101117;
         color: #fff;
     }
-    
+
     .item ul {
         background: #191a23;
         border-radius: 5px;
