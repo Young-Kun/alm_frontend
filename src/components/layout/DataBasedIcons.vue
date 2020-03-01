@@ -16,7 +16,7 @@
 
 <script>
     export default {
-        name: "DataBasedTooltips",
+        name: "DataBasedIcons",
         props: {
             menuListData: {
                 type: Array,

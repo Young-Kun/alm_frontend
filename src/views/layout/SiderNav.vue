@@ -8,14 +8,14 @@
             <data-based-menu-items :menu-list-data=siderMenuList></data-based-menu-items>
         </Menu>
         <div v-show="siderStatus === 'collapsed'">
-            <data-based-tooltips :menu-list-data="siderMenuList"></data-based-tooltips>
+            <data-based-icons :menu-list-data="siderMenuList"></data-based-icons>
         </div>
     </div>
 </template>
 
 <script>
     import DataBasedMenuItems from "@/components/layout/DataBasedMenuItems";
-    import DataBasedTooltips from "@/components/layout/DataBasedTooltips";
+    import DataBasedIcons from "@/components/layout/DataBasedIcons";
     import {mapGetters} from 'vuex';
 
     export default {
@@ -34,7 +34,7 @@
         },
         components: {
             DataBasedMenuItems,
-            DataBasedTooltips,
+            DataBasedIcons,
         },
         methods: {
             backToIndex() {
