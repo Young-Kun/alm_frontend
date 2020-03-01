@@ -20,9 +20,9 @@
             </DatePicker>
         </Card>
         <Card>
-            <Tabs :value="tabsValue" type="card" @on-click="handleTabChange">
+            <Tabs v-model="tabsValue" type="card" @on-click="handleTabChange" :animated="false">
                 <TabPane label="资产负债规模" name="assets">
-                    <Row type="flex">
+                    <Row type="flex" v-if="tabsValue === 'assets'">
                         <i-col :xs="24" :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
                             <Card class="chart-wrapper">
                                 <div>
@@ -33,7 +33,7 @@
                     </Row>
                 </TabPane>
                 <TabPane label="期限结构" name="dur">
-                    <Row type="flex">
+                    <Row type="flex" v-if="tabsValue === 'dur'">
                         <i-col :xs="24" :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
                             <Card class="chart-wrapper">
                                 <div>
@@ -44,46 +44,52 @@
                     </Row>
                 </TabPane>
                 <TabPane label="成本收益" name="cost">
-                    <div style="margin: 20px">
-                        <RadioGroup type="button" v-model="costReturnAcc" @on-change="handleCostReturnAccChange">
-                            <Radio label="T">公司整体</Radio>
-                            <Radio label="C">传统账户</Radio>
-                            <Radio label="P">分红账户</Radio>
-                            <Radio label="U">万能账户</Radio>
-                        </RadioGroup>
+                    <div v-if="tabsValue === 'cost'">
+                        <div style="margin: 20px">
+                            <RadioGroup type="button" v-model="costReturnAcc" @on-change="handleCostReturnAccChange">
+                                <Radio label="T">公司整体</Radio>
+                                <Radio label="C">传统账户</Radio>
+                                <Radio label="P">分红账户</Radio>
+                                <Radio label="U">万能账户</Radio>
+                            </RadioGroup>
+                        </div>
+                        <Row type="flex">
+                            <i-col :xs="24" :md="24" :lg="12" v-for="(type, idx) in costReturnTypes" :key="idx">
+                                <Card class="chart-wrapper">
+                                    <div>
+                                        <v-chart :options="cost_return_options[costReturnAcc][type]" ref="chart"
+                                                 theme="default"></v-chart>
+                                    </div>
+                                </Card>
+                            </i-col>
+                        </Row>
                     </div>
-                    <Row type="flex">
-                        <i-col :xs="24" :md="24" :lg="12" v-for="(type, idx) in costReturnTypes" :key="idx">
-                            <Card class="chart-wrapper">
-                                <div>
-                                    <v-chart :options="cost_return_options[costReturnAcc][type]" ref="chart"
-                                             theme="default"></v-chart>
-                                </div>
-                            </Card>
-                        </i-col>
-                    </Row>
                 </TabPane>
                 <TabPane label="现金流" name="cf">
-                    <div style="margin: 20px">
-                        <RadioGroup type="button" v-model="cashFlowQuarter" @on-change="handleCashFlowQuarterChange">
-                            <Radio :label="q" v-for="(q, idx) in quarters" :key="idx">{{ q }}</Radio>
-                        </RadioGroup>
+                    <div v-if="tabsValue === 'cf'">
+                        <div style="margin: 20px">
+                            <RadioGroup type="button" v-model="cashFlowQuarter"
+                                        @on-change="handleCashFlowQuarterChange">
+                                <Radio :label="q" v-for="(q, idx) in quarters" :key="idx">{{ q }}</Radio>
+                            </RadioGroup>
+                        </div>
+                        <div style="margin: 20px">
+                            <RadioGroup v-model="cashFlowScenario" @on-change="handleScenarioChange">
+                                <Radio label="_base">基本情景</Radio>
+                                <Radio label="_stress">压力情景</Radio>
+                            </RadioGroup>
+                        </div>
+                        <Row type="flex">
+                            <i-col :xs="24" :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
+                                <Card class="chart-wrapper">
+                                    <div>
+                                        <v-chart :options="cash_flow_options[acc]" ref="chart"
+                                                 theme="default"></v-chart>
+                                    </div>
+                                </Card>
+                            </i-col>
+                        </Row>
                     </div>
-                    <div style="margin: 20px">
-                        <RadioGroup v-model="cashFlowScenario" @on-change="handleScenarioChange">
-                            <Radio label="_base">基本情景</Radio>
-                            <Radio label="_stress">压力情景</Radio>
-                        </RadioGroup>
-                    </div>
-                    <Row type="flex">
-                        <i-col :xs="24" :md="24" :lg="12" v-for="(acc, idx) in accounts" :key="idx">
-                            <Card class="chart-wrapper">
-                                <div>
-                                    <v-chart :options="cash_flow_options[acc]" ref="chart" theme="default"></v-chart>
-                                </div>
-                            </Card>
-                        </i-col>
-                    </Row>
                 </TabPane>
             </Tabs>
         </Card>

@@ -74,10 +74,12 @@
 
     .expanded #header {
         width: calc(100% - 200px);
+        transition: all .2s ease-in-out;
     }
 
     .collapsed #header {
         width: calc(100% - 60px);
+        transition: all .2s ease-in-out;
     }
 
     #content {
