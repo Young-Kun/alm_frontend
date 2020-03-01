@@ -44,7 +44,6 @@
             updateActive() {
                 const active = this.$route.path.split('/').reverse()[0];
                 const open = active.split('-')[0];
-                console.log(open);
                 this.active = active;
                 this.open = [open];
                 this.$nextTick(() => {

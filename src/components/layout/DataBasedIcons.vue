@@ -8,7 +8,7 @@
             <Dropdown v-if="menu.menu_items" class="item" placement="right-start">
                 <span><i :class="['fa fa-fw '] + [menu.icon] "></i></span>
                 <DropdownMenu slot="list" style="margin-left: 1px; margin-top: -22px">
-                    <DropdownItem v-for="item in menu.menu_items" :key="item.id" @click.native="gotoUrl(item.to)">
+                    <DropdownItem :class="isActive(item.name)" v-for="item in menu.menu_items" :key="item.id" @click.native="gotoUrl(item.to)">
                         {{item.span}}
                     </DropdownItem>
                 </DropdownMenu>
@@ -36,8 +36,11 @@
             isOpen(name) {
                 return name === this.open ? 'open' : '';
             },
+            isActive(name) {
+                return name === this.active ? 'active' : '';
+            },
             gotoUrl(name) {
-                this.$router.push(name)
+                this.$router.push(name);
             }
         }
     }
@@ -85,5 +88,15 @@
 
     div.open {
         background: #101117;
+    }
+
+    li.active {
+        background: #2d8cf0;
+        color: #fff;
+    }
+
+    li.active:hover {
+        background: #2d8cf0;
+        color: #fff;
     }
 </style>
