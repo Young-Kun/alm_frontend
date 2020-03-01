@@ -1,11 +1,11 @@
 <template>
     <div class="wrapper">
-        <div v-for="menu in menuListData" :key="menu.id">
+        <div v-for="menu in menuListData" :key="menu.id" :class="isOpen(menu.name)">
             <Tooltip placement="right" class="item" :content="menu.span" v-if="!menu.menu_items">
                 <i :class="['fa fa-fw '] + [menu.icon]"></i>
             </Tooltip>
             <Dropdown v-if="menu.menu_items" class="item" placement="right-start">
-                <span><i :class="['fa fa-fw '] + [menu.icon]"></i></span>
+                <span><i :class="['fa fa-fw '] + [menu.icon] "></i></span>
                 <DropdownMenu slot="list" style="margin-left: 1px; margin-top: -22px">
                     <DropdownItem v-for="item in menu.menu_items" :key="item.id">{{item.span}}</DropdownItem>
                 </DropdownMenu>
@@ -21,6 +21,17 @@
             menuListData: {
                 type: Array,
                 required: true
+            },
+            active: {
+                type: String
+            },
+            open: {
+                type: String
+            }
+        },
+        methods: {
+            isOpen(name) {
+                return name === this.open ? 'open' : '';
             },
         }
     }
@@ -64,5 +75,9 @@
     .item li:hover {
         background: #101117;
         color: #fff;
+    }
+    
+    div.open {
+        background: #101117;
     }
 </style>

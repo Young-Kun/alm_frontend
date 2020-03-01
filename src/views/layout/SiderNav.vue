@@ -8,7 +8,7 @@
             <data-based-menu-items :menu-list-data=siderMenuList></data-based-menu-items>
         </Menu>
         <div v-show="siderStatus === 'collapsed'">
-            <data-based-icons :menu-list-data="siderMenuList"></data-based-icons>
+            <data-based-icons :menu-list-data="siderMenuList" :active="active" :open="open[0]"></data-based-icons>
         </div>
     </div>
 </template>
@@ -41,16 +41,19 @@
                 this.$router.push({name: 'index'}).catch(() => {
                 });
             },
+            updateActive() {
+                const active = this.$route.path.split('/').reverse()[0];
+                const open = active.split('-')[0];
+                this.active = active;
+                this.open = [open];
+                this.$nextTick(() => {
+                    this.$refs.siderMenu.updateOpened();
+                    this.$refs.siderMenu.updateActiveName();
+                })
+            }
         },
         mounted() {
-            const active = this.$route.path.split('/').reverse()[0];
-            const open = active.split('-')[0];
-            this.active = active;
-            this.open = [open];
-            this.$nextTick(() => {
-                this.$refs.siderMenu.updateOpened();
-                this.$refs.siderMenu.updateActiveName();
-            })
+            this.updateActive();
         }
     }
 </script>
