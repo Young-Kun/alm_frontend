@@ -4,10 +4,10 @@
             ALM
         </div>
         <Menu ref="siderMenu" theme="dark" accordion width="auto" id="sider-menu" :active-name="active"
-              :open-names="open" v-show="siderStatus === 'expanded'">
+              :open-names="open" v-show="siderStatus === 'expanded'" @click.native="updateActive">
             <data-based-menu-items :menu-list-data=siderMenuList></data-based-menu-items>
         </Menu>
-        <div v-show="siderStatus === 'collapsed'">
+        <div v-show="siderStatus === 'collapsed'" @click="updateActive">
             <data-based-icons :menu-list-data="siderMenuList" :active="active" :open="open[0]"></data-based-icons>
         </div>
     </div>
@@ -44,6 +44,7 @@
             updateActive() {
                 const active = this.$route.path.split('/').reverse()[0];
                 const open = active.split('-')[0];
+                console.log(open);
                 this.active = active;
                 this.open = [open];
                 this.$nextTick(() => {
