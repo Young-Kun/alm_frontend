@@ -54,12 +54,12 @@
 
     .expanded #insider-wrapper {
         padding-left: 200px;
-        transition: all .5s ease;
+        transition: all .2s ease-in-out;
     }
 
     .collapsed #insider-wrapper {
         padding-left: 60px;
-        transition: all .5s ease;
+        transition: all .2s ease-in-out;
     }
 
     #header {
