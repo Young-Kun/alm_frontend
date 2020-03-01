@@ -1,13 +1,16 @@
 <template>
     <div class="wrapper">
         <div v-for="menu in menuListData" :key="menu.id" :class="isOpen(menu.name)">
-            <Tooltip placement="right" class="item" :content="menu.span" v-if="!menu.menu_items">
+            <Tooltip placement="right" class="item" :content="menu.span" v-if="!menu.menu_items"
+                     @click="gotoUrl(menu.to)">
                 <i :class="['fa fa-fw '] + [menu.icon]"></i>
             </Tooltip>
             <Dropdown v-if="menu.menu_items" class="item" placement="right-start">
                 <span><i :class="['fa fa-fw '] + [menu.icon] "></i></span>
                 <DropdownMenu slot="list" style="margin-left: 1px; margin-top: -22px">
-                    <DropdownItem v-for="item in menu.menu_items" :key="item.id">{{item.span}}</DropdownItem>
+                    <DropdownItem v-for="item in menu.menu_items" :key="item.id" @click.native="gotoUrl(item.to)">
+                        {{item.span}}
+                    </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         </div>
@@ -33,6 +36,9 @@
             isOpen(name) {
                 return name === this.open ? 'open' : '';
             },
+            gotoUrl(name) {
+                this.$router.push(name)
+            }
         }
     }
 </script>
@@ -76,7 +82,7 @@
         background: #101117;
         color: #fff;
     }
-    
+
     div.open {
         background: #101117;
     }
