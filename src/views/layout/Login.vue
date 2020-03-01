@@ -1,6 +1,6 @@
 <template>
     <Row type="flex" justify="center" style="margin-top: 10vh">
-        <i-col :xs="24" :lg="8">
+        <i-col :xs="24" :lg="8" :xxl="4">
             <Form ref="loginForm"
                   :model="loginModel"
                   :rules="loginRule"

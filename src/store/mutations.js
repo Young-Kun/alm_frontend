@@ -1,5 +1,6 @@
 import * as types from '@/store/mutationTypes';
 import cookie from '@/custom/cookie';
+import ls from '@/custom/localStorage';
 
 export default {
     [types.SET_USER](state) {
@@ -7,5 +8,13 @@ export default {
             username: cookie.getCookie('username'),
             token: cookie.getCookie('token')
         }
+    },
+    [types.COLLAPSE_SIDER](state) {
+        state.siderStatus = 'collapsed';
+        ls.set('siderStatus', 'collapsed');
+    },
+    [types.EXPAND_SIDER](state) {
+        state.siderStatus = 'expanded';
+        ls.set('siderStatus', 'expanded');
     }
 }

@@ -1,4 +1,5 @@
 import cookie from '@/custom/cookie';
+import ls from '@/custom/localStorage';
 
 const siderMenuList = [
     // 上级菜单的name要等于子菜单的前缀，最多只能有2级菜单
@@ -35,7 +36,10 @@ const user = {
     token: cookie.getCookie('token') || ''
 };
 
+const siderStatus = ls.get('siderStatus');
+
 export default {
+    siderStatus,
     siderMenuList,
     user,
 }

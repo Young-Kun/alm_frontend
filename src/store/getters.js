@@ -3,10 +3,15 @@ const siderMenuList = (state) => {
 };
 
 const username = (state) => {
-    return state.user.username
+    return state.user.username;
+};
+
+const siderStatus = (state) => {
+    return state.siderStatus;
 };
 
 export default {
+    siderStatus,
     siderMenuList,
     username,
 }

@@ -5,7 +5,11 @@ function makeAction (type) {
 }
 
 const setUser = makeAction(types.SET_USER);
+const collapseSider = makeAction(types.COLLAPSE_SIDER);
+const expandSider = makeAction(types.EXPAND_SIDER);
 
 export default {
   setUser,
+  collapseSider,
+  expandSider,
 }
