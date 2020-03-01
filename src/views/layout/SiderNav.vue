@@ -7,11 +7,15 @@
               :open-names="open" v-if="siderStatus === 'expanded'">
             <data-based-menu-items :menu-list-data=siderMenuList></data-based-menu-items>
         </Menu>
+        <div v-if="siderStatus === 'collapsed'">
+            <data-based-tooltips :menu-list-data="siderMenuList"></data-based-tooltips>
+        </div>
     </div>
 </template>
 
 <script>
     import DataBasedMenuItems from "@/components/layout/DataBasedMenuItems";
+    import DataBasedTooltips from "@/components/layout/DataBasedTooltips";
     import {mapGetters} from 'vuex';
 
     export default {
@@ -30,6 +34,7 @@
         },
         components: {
             DataBasedMenuItems,
+            DataBasedTooltips,
         },
         methods: {
             backToIndex() {
@@ -42,10 +47,12 @@
             const open = active.split('-')[0];
             this.active = active;
             this.open = [open];
-            this.$nextTick(() => {
-                this.$refs.siderMenu.updateOpened();
-                this.$refs.siderMenu.updateActiveName();
-            })
+            if (this.siderStatus === 'expanded') {
+                this.$nextTick(() => {
+                    this.$refs.siderMenu.updateOpened();
+                    this.$refs.siderMenu.updateActiveName();
+                })
+            }
         }
     }
 </script>

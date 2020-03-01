@@ -25,7 +25,7 @@
 
 <script>
     export default {
-        name: "MenuItems",
+        name: "DataBasedMenuItems",
         props: {
             menuListData: {
                 type: Array,
