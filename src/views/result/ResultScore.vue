@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-resize="resizeChart">
         <Card style="width: 500px; margin-bottom: 12px">
             <DatePicker ref="monthStart"
                         type="month"
@@ -165,7 +165,7 @@
                         }
                     });
                     this.options.series.push({
-                        type: 'line', name: label, encode: {y: item}, symbol:'circle', symbolSize: 8
+                        type: 'line', name: label, encode: {y: item}, symbol: 'circle', symbolSize: 8
                     });
                 });
                 if (this.selected.length) {
@@ -177,17 +177,11 @@
                 this.handleShowSeries();
             },
             resizeChart() {
-                if (this.$refs.chart) {
-                    this.$refs.chart.resize();
-                }
+                this.$refs.chart.resize();
             }
         },
         beforeMount() {
             this.plotChart();
-            window.addEventListener('resize', this.resizeChart);
-        },
-        beforeDestroy() {
-            window.removeEventListener('resize', this.resizeChart)
         }
     }
 </script>

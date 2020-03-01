@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-resize="resizeChart">
         <Card style="width: 500px; margin-bottom: 12px">
             <DatePicker ref="monthStartInd"
                         type="month"
@@ -493,11 +493,6 @@
         },
         beforeMount() {
             this.plotChartInd();
-            window.addEventListener('resize', this.resizeChart);
-        }
-        ,
-        beforeDestroy() {
-            window.removeEventListener('resize', this.resizeChart)
         }
     }
 </script>

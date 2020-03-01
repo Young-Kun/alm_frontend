@@ -15,7 +15,7 @@
                              maxlength="125"
                              v-model="loginModel.username"
                              placeholder="用户名"
-                             autofocus>
+                             v-focus>
                     </i-input>
                 </FormItem>
                 <FormItem prop="password">
