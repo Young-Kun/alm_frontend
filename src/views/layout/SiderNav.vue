@@ -4,7 +4,7 @@
             ALM
         </div>
         <Menu ref="siderMenu" theme="dark" accordion width="auto" id="sider-menu" :active-name="active"
-              :open-names="open">
+              :open-names="open" v-if="siderStatus === 'expanded'">
             <data-based-menu-items :menu-list-data=siderMenuList></data-based-menu-items>
         </Menu>
     </div>
@@ -25,6 +25,7 @@
         computed: {
             ...mapGetters([
                 'siderMenuList',
+                'siderStatus'
             ])
         },
         components: {
