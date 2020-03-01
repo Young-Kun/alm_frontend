@@ -1,5 +1,8 @@
 <template>
     <Row type="flex">
+        <span id="sider-toggle" @click="handleSider">
+            <i class="fa fa-outdent fa-fw"></i>
+        </span>
         <!--左边菜单-->
         <Menu mode="horizontal" theme="light" class="menu">
             <MenuItem name="1" :to="{name:'test1'}">
@@ -31,12 +34,15 @@
         name: "TopNav",
         computed: {
             ...mapGetters([
-                'username'
+                'username',
+                'siderStatus',
             ])
         },
         methods: {
             ...mapActions([
-                'setUser'
+                'setUser',
+                'collapseSider',
+                'expandSider',
             ]),
             handleLogout() {
                 cookie.delCookie('username');
@@ -45,6 +51,9 @@
                     this.$router.go(0);
                     this.$Message.success('退出成功');
                 });
+            },
+            handleSider() {
+                this.siderStatus === 'expanded' ? this.collapseSider() : this.expandSider();
             }
         }
     }
@@ -67,5 +76,24 @@
 
     .ivu-dropdown:hover {
         color: #2d8cf0;
+    }
+
+    #sider-toggle {
+        display: inline-block;
+        padding: 0 12px;
+        cursor: pointer;
+    }
+
+    #sider-toggle:hover {
+        background: #f8f8f9;
+    }
+
+    .collapsed #sider-toggle i {
+        transform: rotateY(180deg);
+        transition: transform .5s ease;
+    }
+
+    .expanded #sider-toggle i {
+        transition: transform .5s ease;
     }
 </style>

@@ -493,11 +493,11 @@
         },
         beforeMount() {
             this.plotChartInd();
-            window.addEventListener('resize', this.resizeChart);
+            document.getElementsByClassName('chart-wrapper').onrsize = this.resizeChart;
         }
         ,
         beforeDestroy() {
-            window.removeEventListener('resize', this.resizeChart)
+            document.getElementsByClassName('chart-wrapper').off('resize', this.resizeChart)
         }
     }
 </script>

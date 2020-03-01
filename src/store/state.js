@@ -36,7 +36,7 @@ const user = {
     token: cookie.getCookie('token') || ''
 };
 
-const siderStatus = ls.get('siderStatus');
+const siderStatus = ls.get('siderStatus') || 'expanded';
 
 export default {
     siderStatus,
