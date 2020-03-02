@@ -10,8 +10,9 @@ import filters from "@/filters";
 import VCharts from 'vue-echarts';
 import 'echarts';
 import '@/utils/directives';
+import exportToPDF from "@/utils/exportToPDF";
 
-
+Vue.use(exportToPDF);
 Vue.component('v-chart', VCharts);
 
 Vue.prototype.$api = api;
