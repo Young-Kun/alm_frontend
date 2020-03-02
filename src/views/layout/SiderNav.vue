@@ -58,9 +58,9 @@
         mounted() {
             this.updateActive(this.$route);
             window.addEventListener('hashchange', () => {
-                this.$nextTick(() => {
+                setTimeout(() => {
                     this.updateActive(this.$route)
-                })
+                }, 0)
             });
         }
     }

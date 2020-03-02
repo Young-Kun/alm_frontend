@@ -42,8 +42,8 @@
 </template>
 
 <script>
-    import {date, dateStr, getQuarters} from '@/custom/func'
-    import ls from '@/custom/localStorage'
+    import {date, dateStr, getQuarters} from '@/utils/func'
+    import ls from '@/utils/localStorage'
 
     export default {
         name: "Scores",

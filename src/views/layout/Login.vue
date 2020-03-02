@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import cookie from '@/custom/cookie'
+    import cookie from '@/utils/cookie'
     import {mapActions} from 'vuex'
 
     export default {

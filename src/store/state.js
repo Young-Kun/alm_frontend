@@ -1,5 +1,5 @@
-import cookie from '@/custom/cookie';
-import ls from '@/custom/localStorage';
+import cookie from '@/utils/cookie';
+import ls from '@/utils/localStorage';
 
 const siderMenuList = [
     // 上级菜单的name要等于子菜单的前缀，最多只能有2级菜单

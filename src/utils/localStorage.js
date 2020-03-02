@@ -1,4 +1,4 @@
-import {date, dateStr} from "@/custom/func";
+import {date, dateStr} from "@/utils/func";
 
 const localStorage = {
     set(name, value, type = 'str') {

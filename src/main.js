@@ -9,7 +9,7 @@ import api from '@/api'
 import filters from "@/filters";
 import VCharts from 'vue-echarts';
 import 'echarts';
-import '@/custom/directives';
+import '@/utils/directives';
 
 
 Vue.component('v-chart', VCharts);

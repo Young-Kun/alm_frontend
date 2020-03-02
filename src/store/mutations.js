@@ -1,6 +1,6 @@
 import * as types from '@/store/mutationTypes';
-import cookie from '@/custom/cookie';
-import ls from '@/custom/localStorage';
+import cookie from '@/utils/cookie';
+import ls from '@/utils/localStorage';
 
 export default {
     [types.SET_USER](state) {

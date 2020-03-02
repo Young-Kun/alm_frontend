@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import {dateStr} from "@/custom/func";
+    import {dateStr} from "@/utils/func";
 
     export default {
         name: "DataUpload",

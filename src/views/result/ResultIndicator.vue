@@ -106,8 +106,8 @@
         getObjOfAcc,
         getQuarters,
         tooltipFormatPercent
-    } from "@/custom/func";
-    import ls from "@/custom/localStorage";
+    } from "@/utils/func";
+    import ls from "@/utils/localStorage";
 
     export default {
         name: "ResultIndicator",
