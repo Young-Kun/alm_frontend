@@ -23,8 +23,8 @@
         <div class="slide-wrapper" :class="[maximize]" id="slide-wrapper">
             <Card class="slide" :style="{height: slideHeight}" v-resize="handleResize"
                   ref="slide" dis-hover :bordered="false">
-                <page1 v-if="thePage === 1"></page1>
-                <page2 v-if="thePage === 2"></page2>
+                <page1 v-if="thePage === 1" id="page1"></page1>
+                <page2 v-if="thePage === 2" id="page2"></page2>
             </Card>
         </div>
     </div>
@@ -72,7 +72,7 @@
                 }
             },
             exportToPDF() {
-
+                this.$getPdf('page1', '1')
             },
             exit(e) {
                 if (e.key === 'Escape') {

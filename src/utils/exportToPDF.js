@@ -3,8 +3,8 @@ import JsPDF from 'jspdf';
 
 export default {
     install(Vue) {
-        Vue.prototype.getPdf = function (id, title) {
-            html2canvas(document.querySelector(`#${id}`), {
+        Vue.prototype.$getPdf = function (id, title) {
+            html2canvas(document.querySelector(`.${id}`), {
                 // allowTaint: true
                 useCORS: true//看情况选用上面还是下面的，
             }).then(function (canvas) {
