@@ -19,7 +19,7 @@
                 <Page :current="2" :total="50" :page-size="1" simple/>
             </Card>
         </Row>
-        <Card style="margin-top: 12px" ref="slide">
+        <Card style="margin-top: 12px" :style="{height: slideHeight}" v-resize="handleResize" ref="slide">
 
         </Card>
     </div>
@@ -31,6 +31,7 @@
         data() {
             return {
                 quarter: '201912',
+                slideHeight: '100px',
                 quarterOptions: {
                     disabledDate(date) {
                         return (date.getMonth() + 1) % 3 !== 0;
@@ -41,7 +42,13 @@
         methods: {
             handleQuarterChange() {
                 console.log(1);
+            },
+            handleResize() {
+                this.slideHeight = this.$refs.slide.$el.clientWidth / 1.7777  + 'px';
             }
+        },
+        mounted() {
+            this.handleResize();
         }
     }
 </script>
