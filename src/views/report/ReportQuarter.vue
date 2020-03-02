@@ -12,17 +12,19 @@
                 </DatePicker>
             </Card>
             <Card style="margin-left: auto; margin-right: 12px; display: flex; align-items: center">
-                <div class="icon" title="窗口最大化"><i class="fa fa-window-maximize"></i></div>
+                <div class="icon" title="窗口最大化" @click="handleMaximize"><i class="fa fa-window-maximize"></i></div>
                 <div class="icon" title="全屏"><i class="fa fa-fw fa-arrows-alt"></i></div>
             </Card>
             <Card style="display: flex;align-items: center">
                 <Page :current="2" :total="50" :page-size="1" simple/>
             </Card>
         </Row>
-        <Card class="slide" :class="[maximize, fullScreen]" :style="{height: slideHeight}" v-resize="handleResize"
-              ref="slide">
+        <div class="slide-wrapper" :class="[maximize]">
+            <Card class="slide" :style="{height: slideHeight}" v-resize="handleResize"
+                  ref="slide" dis-hover :bordered="false">
 
-        </Card>
+            </Card>
+        </div>
     </div>
 </template>
 
@@ -48,10 +50,24 @@
             },
             handleResize() {
                 this.slideHeight = this.$refs.slide.$el.clientWidth / 1.7777 + 'px';
+            },
+            handleMaximize() {
+                this.maximize = 'maximize';
+                this.$Message.info('按esc键退出');
+            },
+            exit(e) {
+                if (e.keyCode === 27) {
+                    this.maximize = '';
+                    this.fullScreen = '';
+                }
             }
         },
         mounted() {
             this.handleResize();
+            document.addEventListener('keydown', this.exit);
+        },
+        beforeDestroy() {
+            document.removeEventListener('keydown', this.exit);
         }
     }
 </script>
@@ -72,6 +88,19 @@
     }
 
     .slide {
+        width: 100%;
         margin-top: 12px;
+    }
+
+    .slide-wrapper.maximize {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: 1001;
+        display: flex;
+        align-items: center;
+        background: #fff;
     }
 </style>
