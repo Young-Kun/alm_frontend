@@ -13,22 +13,24 @@
             </Card>
             <Card style="margin-left: auto; margin-right: 12px; display: flex; align-items: center">
                 <div class="icon" title="窗口最大化" @click="handleMaximize"><i class="fa fa-window-maximize"></i></div>
-                <div class="icon" title="全屏"><i class="fa fa-fw fa-arrows-alt"></i></div>
+                <div class="icon" title="全屏" @click="handleScreenFull"><i class="fa fa-fw fa-arrows-alt"></i></div>
             </Card>
             <Card style="display: flex;align-items: center">
-                <Page :current="2" :total="50" :page-size="1" simple/>
+                <Page :current="1" :total="50" :page-size="1" simple/>
             </Card>
         </Row>
         <div class="slide-wrapper" :class="[maximize]">
             <Card class="slide" :style="{height: slideHeight}" v-resize="handleResize"
                   ref="slide" dis-hover :bordered="false">
-
+                dfadfda
             </Card>
         </div>
     </div>
 </template>
 
 <script>
+    import screenfull from 'screenfull';
+
     export default {
         name: "ReportQuarter",
         data() {
@@ -55,19 +57,22 @@
                 this.maximize = 'maximize';
                 this.$Message.info('按esc键退出');
             },
+            handleScreenFull() {
+                this.maximize ='maximize';
+                screenfull.toggle();
+            },
             exit(e) {
-                if (e.keyCode === 27) {
+                if (e.key === 'Escape') {
                     this.maximize = '';
-                    this.fullScreen = '';
                 }
             }
         },
         mounted() {
             this.handleResize();
-            document.addEventListener('keydown', this.exit);
+            document.addEventListener('keyup', this.exit);
         },
         beforeDestroy() {
-            document.removeEventListener('keydown', this.exit);
+            document.removeEventListener('keyup', this.exit);
         }
     }
 </script>
