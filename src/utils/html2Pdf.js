@@ -4,10 +4,11 @@ import JsPDF from "jspdf";
 
 export default {
     install(Vue) {
-        Vue.prototype.$getPdf = (id, filename) => {
+        Vue.prototype.$getPdf = (classname, filename) => {
             const pageWidth = 1920;
             const pageHeight = 1080;
-            html2canvas(document.querySelector(`#${id}`), {
+            const els = document.querySelectorAll(`.${classname}`);
+            html2canvas(els[0], {
                 allowTaint: true,
                 taintTest: false,
                 useCORS: true,
