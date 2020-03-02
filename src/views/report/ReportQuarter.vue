@@ -72,7 +72,7 @@
                 }
             },
             exportToPDF() {
-                document.getElementById('page1').print();
+                this.$getPdf('page1', '1')
             },
             exit(e) {
                 if (e.key === 'Escape') {
