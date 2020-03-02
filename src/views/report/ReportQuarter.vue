@@ -19,7 +19,7 @@
                 <Page :current="1" :total="50" :page-size="1" simple/>
             </Card>
         </Row>
-        <div class="slide-wrapper" :class="[maximize]">
+        <div class="slide-wrapper" :class="[maximize]" id="slide-wrapper">
             <Card class="slide" :style="{height: slideHeight}" v-resize="handleResize"
                   ref="slide" dis-hover :bordered="false">
                 dfadfda
@@ -55,11 +55,12 @@
             },
             handleMaximize() {
                 this.maximize = 'maximize';
-                this.$Message.info('按esc键退出');
+                this.$Message.info(`按 <b>[esc]</b> 键退出`);
             },
             handleScreenFull() {
-                this.maximize ='maximize';
-                screenfull.toggle();
+                if (screenfull.isEnabled) {
+                    screenfull.request(document.getElementById('slide-wrapper'));
+                }
             },
             exit(e) {
                 if (e.key === 'Escape') {
