@@ -20,8 +20,4 @@
         height: 100%;
         padding: 0;
     }
-
-    .page {
-        padding: 12px;
-    }
 </style>

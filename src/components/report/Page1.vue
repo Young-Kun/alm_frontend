@@ -1,5 +1,5 @@
 <template>
-    <div class="page">第一页</div>
+    <div>第一页</div>
 </template>
 
 <script>
