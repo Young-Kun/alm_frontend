@@ -19,7 +19,7 @@
                 <Page :current="2" :total="50" :page-size="1" simple/>
             </Card>
         </Row>
-        <Card style="margin-top: 12px">
+        <Card style="margin-top: 12px" ref="slide">
 
         </Card>
     </div>
@@ -35,7 +35,7 @@
                     disabledDate(date) {
                         return (date.getMonth() + 1) % 3 !== 0;
                     }
-                },
+                }
             }
         },
         methods: {
@@ -55,7 +55,7 @@
         text-align: center;
         cursor: pointer;
     }
-    
+
     .icon:hover {
         background: #f8f8f9;
         font-size: large;
