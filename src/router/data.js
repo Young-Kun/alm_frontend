@@ -1,4 +1,3 @@
-// data模块的路由
 export default [
     {
         path: 'data-upload',

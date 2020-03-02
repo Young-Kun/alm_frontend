@@ -4,6 +4,7 @@ import state from "@/store/state";
 import test from "@/router/test";
 import data from "@/router/data";
 import result from "@/router/result";
+import report from "@/router/report";
 
 Vue.use(VueRouter);
 
@@ -12,6 +13,7 @@ const children = merge([
     test,
     data,
     result,
+    report,
 ]);
 
 // 合并多个数组

@@ -1,4 +1,3 @@
-// result模块的路由
 export default [
     {
         path: 'result-score',

@@ -25,9 +25,13 @@ const siderMenuList = [
     },
     {
         id: 3,
-        name: 'internal-data',
+        name: 'report',
         icon: 'fa-file-powerpoint-o',
-        span: '内部报告'
+        span: '内部报告',
+        menu_items: [
+            {id: 1, name: 'report-quarter', icon: '', span: '季度报告', to: {name: 'report-quarter'}},
+            {id: 2, name: 'report-month', icon: '', span: '月度监测', to: {name: 'report-month'}},
+        ]
     },
 ];
 
