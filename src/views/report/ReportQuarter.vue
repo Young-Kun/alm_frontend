@@ -12,6 +12,7 @@
                 </DatePicker>
             </Card>
             <Card style="margin-left: auto; margin-right: 12px; display: flex; align-items: center">
+                <div class="icon" title="导出为PDF" @click="exportToPDF"><i class="fa fa-file-pdf-o"></i></div>
                 <div class="icon" title="窗口最大化" @click="handleMaximize"><i class="fa fa-window-maximize"></i></div>
                 <div class="icon" title="全屏" @click="handleScreenFull"><i class="fa fa-fw fa-arrows-alt"></i></div>
             </Card>
@@ -69,6 +70,9 @@
                 if (screenfull.isEnabled) {
                     screenfull.request(document.getElementById('slide-wrapper'));
                 }
+            },
+            exportToPDF() {
+
             },
             exit(e) {
                 if (e.key === 'Escape') {
