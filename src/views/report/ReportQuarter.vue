@@ -19,7 +19,8 @@
                 <Page :current="2" :total="50" :page-size="1" simple/>
             </Card>
         </Row>
-        <Card style="margin-top: 12px" :style="{height: slideHeight}" v-resize="handleResize" ref="slide">
+        <Card class="slide" :class="[maximize, fullScreen]" :style="{height: slideHeight}" v-resize="handleResize"
+              ref="slide">
 
         </Card>
     </div>
@@ -31,7 +32,9 @@
         data() {
             return {
                 quarter: '201912',
-                slideHeight: '100px',
+                slideHeight: '',
+                maximize: '',
+                fullScreen: '',
                 quarterOptions: {
                     disabledDate(date) {
                         return (date.getMonth() + 1) % 3 !== 0;
@@ -44,7 +47,7 @@
                 console.log(1);
             },
             handleResize() {
-                this.slideHeight = this.$refs.slide.$el.clientWidth / 1.7777  + 'px';
+                this.slideHeight = this.$refs.slide.$el.clientWidth / 1.7777 + 'px';
             }
         },
         mounted() {
@@ -66,5 +69,9 @@
     .icon:hover {
         background: #f8f8f9;
         font-size: large;
+    }
+
+    .slide {
+        margin-top: 12px;
     }
 </style>

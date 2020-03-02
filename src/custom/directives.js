@@ -8,7 +8,11 @@ Vue.directive('resize', {
 
         function isResize() {
             const style = document.defaultView.getComputedStyle(el);
-            if (width !== style.width || height !== style.height) {
+            if (parseInt(width) > parseInt(style.width) + 20 || parseInt(height) > parseInt(style.height) + 20
+                || parseInt(width) < parseInt(style.width) - 20 || parseInt(height) < parseInt(style.height) - 20) {
+                console.log(height);
+                console.log(style.height);
+
                 binding.value();
             }
             width = style.width;
