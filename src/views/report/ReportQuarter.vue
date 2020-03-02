@@ -16,13 +16,14 @@
                 <div class="icon" title="全屏" @click="handleScreenFull"><i class="fa fa-fw fa-arrows-alt"></i></div>
             </Card>
             <Card style="display: flex;align-items: center">
-                <Page :current="1" :total="50" :page-size="1" simple/>
+                <Page :current="thePage" :total="50" :page-size="1" simple @on-change="handleFlick"/>
             </Card>
         </Row>
         <div class="slide-wrapper" :class="[maximize]" id="slide-wrapper">
             <Card class="slide" :style="{height: slideHeight}" v-resize="handleResize"
                   ref="slide" dis-hover :bordered="false">
-                dfadfda
+                <page1 v-if="thePage === 1"></page1>
+                <page2 v-if="thePage === 2"></page2>
             </Card>
         </div>
     </div>
@@ -30,15 +31,22 @@
 
 <script>
     import screenfull from 'screenfull';
+    import Page1 from "@/components/report/Page1";
+    import Page2 from "@/components/report/Page2";
 
     export default {
         name: "ReportQuarter",
+        components: {
+            Page1,
+            Page2
+        },
         data() {
             return {
                 quarter: '201912',
                 slideHeight: '',
                 maximize: '',
                 fullScreen: '',
+                thePage: 1,
                 quarterOptions: {
                     disabledDate(date) {
                         return (date.getMonth() + 1) % 3 !== 0;
@@ -66,6 +74,9 @@
                 if (e.key === 'Escape') {
                     this.maximize = '';
                 }
+            },
+            handleFlick(page) {
+                this.thePage = page;
             }
         },
         mounted() {
