@@ -15,4 +15,13 @@
         width: 100%!important;
         height: 100%!important;
     }
+
+    .slide .ivu-card-body {
+        height: 100%;
+        padding: 0;
+    }
+
+    .page {
+        padding: 12px;
+    }
 </style>

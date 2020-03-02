@@ -4,12 +4,14 @@ import JsPDF from 'jspdf';
 export default {
     install(Vue) {
         Vue.prototype.$getPdf = function (id, title) {
-            html2canvas(document.querySelector(`.${id}`), {
+            html2canvas(document.querySelector(`#${id}`), {
                 // allowTaint: true
                 useCORS: true//看情况选用上面还是下面的，
-            }).then(function (canvas) {
+            }).then((canvas) => {
                     let contentWidth = canvas.width;
                     let contentHeight = canvas.height;
+                    console.log(contentWidth);
+                    console.log(contentHeight);
                     let pageHeight = contentWidth / 592.28 * 841.89;
                     let leftHeight = contentHeight;
                     let position = 0;
