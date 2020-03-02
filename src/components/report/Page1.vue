@@ -1,5 +1,7 @@
 <template>
-    <div>第一页</div>
+    <div>
+        <Button type="primary">第一页</Button>
+    </div>
 </template>
 
 <script>
