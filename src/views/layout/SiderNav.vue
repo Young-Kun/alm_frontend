@@ -4,11 +4,12 @@
             ALM
         </div>
         <Menu ref="siderMenu" theme="dark" accordion width="auto" id="sider-menu" :active-name="active"
-              :open-names="open" v-show="siderStatus === 'expanded'" @click.native="updateActive">
-            <data-based-menu-items :menu-list-data=siderMenuList></data-based-menu-items>
+              :open-names="open" v-show="siderStatus === 'expanded'">
+            <data-based-menu-items :menu-list-data=siderMenuList @goto-url="updateActive"></data-based-menu-items>
         </Menu>
-        <div v-show="siderStatus === 'collapsed'" @click="updateActive">
-            <data-based-icons :menu-list-data="siderMenuList" :active="active" :open="open[0]"></data-based-icons>
+        <div v-show="siderStatus === 'collapsed'">
+            <data-based-icons :menu-list-data="siderMenuList" :active="active" :open="open[0]"
+                              @goto-url="updateActive"></data-based-icons>
         </div>
     </div>
 </template>
@@ -41,8 +42,10 @@
                 this.$router.push({name: 'index'}).catch(() => {
                 });
             },
-            updateActive() {
-                const active = this.$route.path.split('/').reverse()[0];
+            updateActive(route) {
+                this.$router.push(route).catch(() => {
+                });
+                const active = route.name;
                 const open = active.split('-')[0];
                 this.active = active;
                 this.open = [open];
@@ -53,7 +56,7 @@
             }
         },
         mounted() {
-            this.updateActive();
+            this.updateActive(this.$route);
         }
     }
 </script>

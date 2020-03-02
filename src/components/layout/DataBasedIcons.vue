@@ -39,8 +39,8 @@
             isActive(name) {
                 return name === this.active ? 'active' : '';
             },
-            gotoUrl(name) {
-                this.$router.push(name);
+            gotoUrl(route) {
+                this.$emit('goto-url', route);
             }
         }
     }

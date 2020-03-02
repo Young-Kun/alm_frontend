@@ -7,14 +7,15 @@
                         <i :class="['fa fa-fw '] + [menu.icon]"></i>
                         <span>{{ menu.span }}</span>
                     </template>
-                    <MenuItem v-for="item in menu.menu_items" :key="item.id" :name="item.name" :to=item.to>
+                    <MenuItem v-for="item in menu.menu_items" :key="item.id" :name="item.name"
+                              @click.native="gotoUrl(item.to)">
                         <i :class="['fa fa-fw '] + [item.icon]"></i>
                         <span>{{ item.span }}</span>
                     </MenuItem>
                 </Submenu>
             </div>
             <div v-else>
-                <MenuItem :name="menu.name" :to="menu.to">
+                <MenuItem :name="menu.name" @click.native="gotoUrl(menu.to)">
                     <i :class="['fa fa-fw '] + [menu.icon]"></i>
                     <span>{{ menu.span }}</span>
                 </MenuItem>
@@ -31,6 +32,11 @@
                 type: Array,
                 required: true
             },
+        },
+        methods: {
+            gotoUrl(route) {
+                this.$emit('goto-url', route);
+            }
         }
     }
 </script>
@@ -39,6 +45,7 @@
     .menu-items-wrapper .ivu-menu-item, .menu-items-wrapper .ivu-menu-submenu {
         white-space: nowrap;
     }
+
     .menu-items-wrapper {
         height: calc(100vh - 64px);
         overflow-y: auto;
